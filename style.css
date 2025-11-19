@@ -1,0 +1,169 @@
+/* Reset e box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Fontes e cores */
+body {
+    font-family: 'Inter', sans-serif;
+    background: #e9f5ec;
+    color: #333;
+    line-height: 1.7;
+}
+
+:root {
+    --verde-escuro: #0b6e4f;
+    --verde-medio: #10a56f;
+    --verde-claro: #d4f5df;
+}
+
+/* HEADER */
+header {
+    background: linear-gradient(135deg, var(--verde-escuro), var(--verde-medio));
+    padding: 80px 20px 50px;
+    color: white;
+    text-align: center;
+    position: relative;
+}
+
+.logo-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.logo-container img {
+    height: 85px;
+    border-radius: 8px;
+    background: white;
+    padding: 5px;
+}
+
+/* NAV */
+nav {
+    background: white;
+    padding: 15px 20px;
+    position: sticky;
+    top: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    list-style: none;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: 600;
+    color: var(--verde-escuro);
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: var(--verde-medio);
+}
+
+/* CONTAINER */
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+section {
+    background: white;
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 12px;
+    border-left: 6px solid var(--verde-medio);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    transition: 0.3s;
+}
+
+section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* CARDS */
+.cards {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 5px solid var(--verde-escuro);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* TIPOGRAFIA */
+h2 {
+    color: var(--verde-escuro);
+    margin-bottom: 15px;
+}
+
+h3 {
+    margin-bottom: 10px;
+    color: var(--verde-escuro);
+}
+
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* PDF BUTTON */
+.pdf-btn {
+    display: inline-block;
+    background: #0b8f5a;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.pdf-btn:hover {
+    background: #086a44;
+}
+
+/* FOOTER */
+footer {
+    background: var(--verde-escuro);
+    color: white;
+    text-align: center;
+    padding: 25px 10px;
+    margin-top: 50px;
+}
+
+footer p {
+    opacity: 0.7;
+}
+
+footer p.important {
+    opacity: 1;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 10px;
+}
