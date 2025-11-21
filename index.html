@@ -12,6 +12,8 @@ body{transition:0.4s ease;background:#121212;color:#e0e0e0;}
 body.light-mode{background:#f2f2f2;color:#111;}
 header, footer, nav a, section, .card, .pdf-btn{transition:0.4s;}
 header{background:linear-gradient(135deg,#0b6e4f,#10a56f);padding:80px 20px 50px;color:white;text-align:center;position:relative;}
+.logo-container{position:absolute;top:20px;left:20px;cursor:pointer;}
+.logo-container img{height:85px;border-radius:8px;background:white;padding:5px;}
 nav{background:white;padding:15px 20px;position:sticky;top:0;box-shadow:0 2px 8px rgba(0,0,0,0.1);z-index:10;}
 nav ul{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;list-style:none;}
 nav a{text-decoration:none;font-weight:600;color:#0b6e4f;}
@@ -129,14 +131,114 @@ body.dark-mode #usuario-input, body.dark-mode #senha-input, body.dark-mode #admi
 </nav>
 
 <div class="container">
-  <section id="download"><h2><i class="fa-solid fa-file-pdf"></i> Baixar PDF</h2>
+  <section id="download">
+    <h2><i class="fa-solid fa-file-pdf"></i> Baixar PDF</h2>
     <p>Clique no botão abaixo para baixar o checklist em PDF.</p>
     <a class="pdf-btn" href="#" download><i class="fa-solid fa-download"></i> Baixar PDF</a>
   </section>
-  <section id="importancia"><h2><i class="fa-solid fa-star"></i> Importância da conferência</h2>
-    <ul><li>Padronização e legibilidade das informações.</li><li>Correção de dados administrativos.</li><li>Organização para auditorias internas e externas.</li><li>Respeito às normas legais e institucionais.</li><li>Segurança e integridade das informações.</li></ul>
+
+  <section id="importancia">
+    <h2><i class="fa-solid fa-star"></i> Importância da conferência</h2>
+    <ul>
+      <li>Padronização e legibilidade das informações.</li>
+      <li>Correção de dados administrativos.</li>
+      <li>Organização para auditorias internas e externas.</li>
+      <li>Respeito às normas legais e institucionais.</li>
+      <li>Segurança e integridade das informações.</li>
+    </ul>
   </section>
-  <!-- Continue adicionando as seções restantes -->
+
+  <section id="materiais">
+    <h2><i class="fa-solid fa-folder-open"></i> Materiais necessários</h2>
+    <ul>
+      <li>Checklist de conferência oficial.</li>
+      <li>Acesso autorizado ao prontuário.</li>
+      <li>Ferramenta de anotação.</li>
+      <li>Ambiente silencioso e seguro.</li>
+      <li>Caneta.</li>
+      <li>Tira grampos.</li>
+      <li>Carimbos.</li>
+    </ul>
+  </section>
+
+  <section id="o-que-e">
+    <h2><i class="fa-solid fa-notes-medical"></i> O que é um prontuário?</h2>
+    <p>O prontuário reúne informações registradas durante o atendimento e deve manter organização, legibilidade e conformidade institucional.</p>
+  </section>
+
+  <section id="preparo">
+    <h2><i class="fa-solid fa-clipboard-check"></i> Antes de começar</h2>
+    <div class="cards">
+      <div class="card">
+        <i class="fa-solid fa-id-card"></i>
+        <h3>Autorização</h3>
+        <p>Confirme se possui permissão formal.</p>
+      </div>
+      <div class="card">
+        <i class="fa-solid fa-shield-halved"></i>
+        <h3>Sigilo</h3>
+        <p>Proteja dados sensíveis conforme a LGPD.</p>
+      </div>
+      <div class="card">
+        <i class="fa-solid fa-list-check"></i>
+        <h3>Checklist</h3>
+        <p>Use o checklist oficial da instituição.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="passos">
+    <h2><i class="fa-solid fa-list-ul"></i> Passo a passo</h2>
+    <ul>
+      <li>Verifique a identificação do paciente.</li>
+      <li>Organize páginas e documentos.</li>
+      <li>Confirme datas e assinaturas.</li>
+      <li>Cheque campos obrigatórios.</li>
+      <li>Valide anexos.</li>
+    </ul>
+  </section>
+
+  <section id="erros">
+    <h2><i class="fa-solid fa-exclamation-triangle"></i> Erros comuns</h2>
+    <ul>
+      <li>Assinaturas faltando.</li>
+      <li>Páginas desorganizadas.</li>
+      <li>Campos incompletos.</li>
+      <li>Folhas ausentes.</li>
+    </ul>
+  </section>
+
+  <section id="boas-praticas">
+    <h2><i class="fa-solid fa-thumbs-up"></i> Boas práticas</h2>
+    <ul>
+      <li>Trabalhe em ambiente silencioso.</li>
+      <li>Checar itens críticos duas vezes.</li>
+      <li>Registrar inconsistências na hora.</li>
+    </ul>
+  </section>
+
+  <section id="fluxo">
+    <h2><i class="fa-solid fa-diagram-project"></i> Fluxo recomendado</h2>
+    <ol>
+      <li>Receber o prontuário.</li>
+      <li>Verificar autorização.</li>
+      <li>Organizar documentos.</li>
+      <li>Aplicar checklist.</li>
+      <li>Registrar irregularidades.</li>
+      <li>Encaminhar correções.</li>
+      <li>Arquivar corretamente.</li>
+    </ol>
+  </section>
+
+  <section id="faq">
+    <h2><i class="fa-solid fa-circle-question"></i> FAQ</h2>
+    <h3>Posso corrigir um prontuário?</h3>
+    <p>Somente o profissional responsável pode corrigir.</p>
+    <h3>Posso fotografar o prontuário?</h3>
+    <p>Em geral, não. Informações são sigilosas.</p>
+    <h3>Preciso de autorização?</h3>
+    <p>Sempre. O acesso deve ser justificado e formal.</p>
+  </section>
 </div>
 
 <footer>
