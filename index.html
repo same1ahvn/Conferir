@@ -72,26 +72,31 @@
             letter-spacing: .3px;
         }
 
+        /* nav: sticky and visible while scrolling, but lower z-index than overlays/panels */
         nav {
             background: var(--nav-bg);
             padding: 12px 18px;
             position: sticky;
             top: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            z-index: 10001; /* alto para ficar acima do overlay */
+            z-index: 60; /* lower than overlays/panels */
+            transition: opacity .18s, transform .18s;
         }
+        nav.hidden { display: none !important; } /* used when panels/overlay open */
         nav ul {
             display:flex;
             justify-content:center;
-            gap:22px;
+            gap:18px;
             list-style:none;
             flex-wrap:wrap;
+            align-items:center;
         }
         nav a {
             text-decoration:none;
             font-weight:600;
             color: var(--verde-escuro);
-            transition: .2s;
+            transition: .15s;
+            cursor: pointer;
         }
         nav a:hover { color: var(--verde-medio); }
 
@@ -149,7 +154,7 @@
             display:flex;
             align-items:center;
             justify-content:center;
-            z-index: 9999; /* menor que nav para nav ficar por cima */
+            z-index: 9999; /* higher than nav */
         }
         .login-box {
             background: var(--card-bg);
@@ -214,7 +219,7 @@
             padding: 18px;
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.25);
-            z-index: 9998;
+            z-index: 10002; /* above nav and overlay */
             width: 360px;
             transition: background .2s, color .2s;
         }
@@ -238,7 +243,7 @@
             padding:8px 12px;
             border-radius: 10px;
             box-shadow: 0 6px 20px rgba(0,0,0,0.12);
-            z-index: 60;
+            z-index: 10003; /* above nav */
             display:flex;
             gap:10px;
             align-items:center;
@@ -246,11 +251,31 @@
         .user-bar .name { font-weight:700; }
         .user-bar button { padding:6px 10px; border-radius:8px; border:none; cursor:pointer; background:var(--verde-medio); color:white; font-weight:700; }
 
+        /* Perfil modal sits above admin/panels */
+        #perfilModal {
+            display:none;
+            position:fixed;
+            inset:0;
+            z-index:10004;
+            align-items:center;
+            justify-content:center;
+            background: rgba(0,0,0,0.5);
+        }
+        #perfilModal .box {
+            background:var(--card-bg);
+            color:var(--text);
+            padding:18px;
+            border-radius:10px;
+            width:360px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.25);
+        }
+
         /* small screens */
         @media (max-width:640px){
             .login-box{ width:90%; }
             #adminPanel{ width:calc(100% - 40px); left:20px; top:100px; }
             .user-bar { right:8px; top:100px; }
+            nav ul { gap:10px; font-size:0.95rem; }
         }
 
     </style>
@@ -278,7 +303,7 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL (aberto clicando na logo) -->
+    <!-- ADMIN PANEL (aberto clicando na logo ou nav) -->
     <div id="adminPanel" aria-hidden="true">
         <h3>Painel Administrativo</h3>
 
@@ -327,7 +352,7 @@
         <p>Organização, segurança e qualidade nas informações administrativas.</p>
     </header>
 
-    <nav>
+    <nav id="mainNav">
         <ul>
             <li><a href="#download">PDF</a></li>
             <li><a href="#importancia">Importância</a></li>
@@ -339,6 +364,10 @@
             <li><a href="#boas-praticas">Boas práticas</a></li>
             <li><a href="#fluxo">Fluxo</a></li>
             <li><a href="#faq">FAQ</a></li>
+
+            <!-- Novo: Perfil e Admin no nav -->
+            <li><a id="navPerfil" onclick="handleNavPerfil()">Perfil</a></li>
+            <li><a id="navAdmin" onclick="handleNavAdmin()">Admin</a></li>
         </ul>
     </nav>
 
@@ -468,8 +497,8 @@
     </footer>
 
     <!-- Perfil modal (para trocar senha e tema) -->
-    <div id="perfilModal" style="display:none; position:fixed; inset:0; z-index:9997; align-items:center; justify-content:center; background: rgba(0,0,0,0.5);">
-        <div style="background:var(--card-bg); color:var(--text); padding:18px; border-radius:10px; width:360px; box-shadow:0 10px 30px rgba(0,0,0,0.25);">
+    <div id="perfilModal">
+        <div class="box">
             <h3 style="color:var(--verde-escuro); margin-bottom:8px;">Meu Perfil</h3>
 
             <div style="margin-top:6px;">
@@ -481,7 +510,7 @@
                 <input id="perfilSenhaNova" type="password" placeholder="Nova senha" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
                 <div style="display:flex; gap:8px; margin-top:8px;">
                     <button onclick="trocarSenha()" style="flex:1; padding:8px; border-radius:6px; border:none; background:var(--verde-medio); color:white; font-weight:700;">Alterar</button>
-                    <button onclick="document.getElementById('perfilModal').style.display='none'" style="flex:1; padding:8px; border-radius:6px; border:none; background:#ddd;">Fechar</button>
+                    <button onclick="fecharPerfil()" style="flex:1; padding:8px; border-radius:6px; border:none; background:#ddd;">Fechar</button>
                 </div>
             </div>
 
@@ -493,7 +522,7 @@
                 </select>
             </div>
 
-            <!-- NOVA OPÇÃO: Auto-login / Sempre pedir senha -->
+            <!-- Auto-login preference -->
             <div style="margin-top:12px;">
                 <label style="display:block; margin-bottom:6px; font-weight:600;">Preferência de Login</label>
                 <label style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
@@ -506,7 +535,7 @@
 
             <div style="margin-top:12px; display:flex; gap:8px;">
                 <button onclick="salvarPerfil()" style="flex:1; padding:8px; border-radius:6px; border:none; background:#0b6e4f; color:white; font-weight:700;">Salvar Perfil</button>
-                <button onclick="document.getElementById('perfilModal').style.display='none'" style="flex:1; padding:8px; border-radius:6px; border:none; background:#ddd;">Fechar</button>
+                <button onclick="fecharPerfil()" style="flex:1; padding:8px; border-radius:6px; border:none; background:#ddd;">Fechar</button>
             </div>
         </div>
     </div>
@@ -532,7 +561,6 @@
         }
         try {
             const arr = JSON.parse(raw);
-            // garantir que cada usuário tenha as chaves necessárias (compatibilidade)
             return arr.map(u => ({
                 user: u.user,
                 senha: u.senha,
@@ -546,6 +574,10 @@
     let usuarios = carregarUsuarios();
     let usuarioLogado = null;
 
+    /* helper: esconder/mostrar nav (usado quando abrir panels/overlay) */
+    function esconderNav(){ document.getElementById("mainNav").classList.add("hidden"); }
+    function mostrarNav(){ document.getElementById("mainNav").classList.remove("hidden"); }
+
     // Aplica tema (global) — e também lê tema do usuário quando logado
     function aplicarTema(tema){
         if(tema === "dark") document.body.classList.add("dark");
@@ -555,11 +587,14 @@
     // Quando a página carrega, checar sessão e auto-login
     document.addEventListener("DOMContentLoaded", () => {
         // toggler olho - login
-        document.getElementById("toggleSenha").addEventListener("click", () => {
-            const el = document.getElementById("userSenha");
-            if(el.type === "password"){ el.type = "text"; document.getElementById("toggleSenha").classList.remove("fa-eye"); document.getElementById("toggleSenha").classList.add("fa-eye-slash"); }
-            else { el.type = "password"; document.getElementById("toggleSenha").classList.add("fa-eye"); document.getElementById("toggleSenha").classList.remove("fa-eye-slash"); }
-        });
+        const toggle = document.getElementById("toggleSenha");
+        if(toggle){
+            toggle.addEventListener("click", () => {
+                const el = document.getElementById("userSenha");
+                if(el.type === "password"){ el.type = "text"; toggle.classList.remove("fa-eye"); toggle.classList.add("fa-eye-slash"); }
+                else { el.type = "password"; toggle.classList.add("fa-eye"); toggle.classList.remove("fa-eye-slash"); }
+            });
+        }
 
         // if existe sessão (login por sessão)
         const sessao = localStorage.getItem(STORAGE_USER);
@@ -591,6 +626,7 @@
         // Sem sessão/autologin: mostrar overlay e aplicar tema default (light)
         aplicarTema("light");
         document.getElementById("loginOverlay").style.display = "flex";
+        esconderNav(); // hide nav while login overlay is present
     });
 
     // Função de login
@@ -619,6 +655,7 @@
     // Ao logar: esconder overlay, mostrar userbar e aplicar tema do usuário
     function onLogin(){
         document.getElementById("loginOverlay").style.display = "none";
+        mostrarNav();
         document.getElementById("userBar").style.display = "flex";
         document.getElementById("userNome").textContent = usuarioLogado.user;
 
@@ -640,16 +677,29 @@
         document.getElementById("userSenha").value = "";
         // resetar tema default
         aplicarTema("light");
+        esconderNav(); // hide nav during login
     }
 
-    // abrir painel admin (clicando na logo) — apenas admin
+    // abrir painel admin (clicando na logo ou nav) — apenas admin
     document.querySelector(".logo-container").addEventListener("click", () => {
         if(!usuarioLogado){ alert("Você precisa estar logado como administrador."); return; }
         if(usuarioLogado.role !== "admin"){ alert("Apenas administradores podem acessar o painel."); return; }
         abrirAdmin();
     });
 
+    // Nav handlers for Perfil and Admin
+    function handleNavAdmin(){
+        if(!usuarioLogado){ alert("Faça login primeiro."); return; }
+        if(usuarioLogado.role !== "admin"){ alert("Apenas administradores podem acessar o painel."); return; }
+        abrirAdmin();
+    }
+    function handleNavPerfil(){
+        if(!usuarioLogado){ alert("Faça login primeiro."); return; }
+        abrirPerfil();
+    }
+
     function abrirAdmin(){
+        esconderNav();
         document.getElementById("adminPanel").style.display = "block";
         document.getElementById("adminPanel").setAttribute("aria-hidden","false");
         atualizarListaUsuarios();
@@ -657,6 +707,7 @@
     function fecharAdmin(){
         document.getElementById("adminPanel").style.display = "none";
         document.getElementById("adminPanel").setAttribute("aria-hidden","true");
+        mostrarNav();
     }
 
     // Atualizar lista no admin
@@ -772,10 +823,13 @@
             document.getElementById("perfilAutoAlways").checked = true;
         }
 
+        esconderNav();
         document.getElementById("perfilModal").style.display = "flex";
+    }
 
-        // controlar visibilidade de ações: viewers só podem alterar sua própria senha (que já é o caso)
-        // admins também podem alterar a própria senha e tema
+    function fecharPerfil(){
+        document.getElementById("perfilModal").style.display = "none";
+        mostrarNav();
     }
 
     // trocar senha do usuário logado
@@ -832,7 +886,7 @@
 
         aplicarTema(tema);
         alert("Preferências salvas.");
-        document.getElementById("perfilModal").style.display = "none";
+        fecharPerfil();
     }
 
     /***** Acessibilidade: detectar Enter no login *****/
