@@ -1,288 +1,187 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Como Conferir Prontuários</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Como Conferir Prontuários</title>
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <style>
-        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Inter', sans-serif; }
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Inter', sans-serif; }
+body { background:#e9f5ec; color:#333; line-height:1.7; transition: all 0.3s ease; }
 
-        body { background:#e9f5ec; color:#333; line-height:1.7; transition: all 0.3s ease; }
+:root {
+    --verde-escuro: #0b6e4f;
+    --verde-medio: #10a56f;
+    --verde-claro: #d4f5df;
+}
 
-        :root {
-            --verde-escuro: #0b6e4f;
-            --verde-medio: #10a56f;
-            --verde-claro: #d4f5df;
-        }
+/* Header, nav, container, sections, cards, etc */
+header { background: linear-gradient(135deg, var(--verde-escuro), var(--verde-medio)); padding:80px 20px 50px; color:white; text-align:center; position: relative; }
+.logo-container { position: absolute; top: 20px; left: 20px; }
+.logo-container img { height: 85px; border-radius: 8px; background: white; padding: 5px; cursor: pointer; }
+nav { background:white; padding:15px 20px; position: sticky; top:0; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:10; }
+nav ul { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; list-style:none; }
+nav a { text-decoration:none; font-weight:600; color:var(--verde-escuro); transition:0.3s; }
+nav a:hover { color:var(--verde-medio); }
+.container { max-width:1000px; margin:40px auto; padding:20px; }
+section { background:white; padding:25px; margin-bottom:30px; border-radius:12px; border-left:6px solid var(--verde-medio); box-shadow:0 4px 12px rgba(0,0,0,0.06); transition:0.3s; }
+section:hover { transform: translateY(-3px); box-shadow:0 6px 18px rgba(0,0,0,0.12); }
+.cards { display:grid; gap:20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.card { background:#fff; padding:20px; border-radius:12px; border-left:5px solid var(--verde-escuro); box-shadow:0 4px 14px rgba(0,0,0,0.08); transition:0.3s; }
+.card:hover { transform: translateY(-5px); }
+h2 { color: var(--verde-escuro); margin-bottom: 15px; }
+h3 { margin-bottom: 10px; color: var(--verde-escuro); }
+ul { padding-left:20px; }
+li { margin-bottom:10px; }
+footer { background: var(--verde-escuro); color:white; text-align:center; padding:25px 10px; margin-top:50px; }
+footer p { opacity:0.7; }
+.pdf-btn { display:inline-block; background:#0b8f5a; color:white; padding:15px 25px; border-radius:8px; font-size:1.1rem; text-decoration:none; font-weight:600; transition:0.3s; }
+.pdf-btn:hover { background:#086a44; }
 
-        header {
-            background: linear-gradient(135deg, var(--verde-escuro), var(--verde-medio));
-            padding:80px 20px 50px;
-            color:white;
-            text-align:center;
-            position: relative;
-        }
+/* ==============================
+   TEMA ESCURO
+============================== */
+body.dark-mode { background:#121212; color:#e0e0e0; }
+body.dark-mode header { background: linear-gradient(135deg, #0a4d36, #0c704f); color:#e0e0e0; }
+body.dark-mode nav { background:#1e1e1e; box-shadow:0 2px 8px rgba(255,255,255,0.05); }
+body.dark-mode nav a { color:#a8f0c6; }
+body.dark-mode nav a:hover { color: #10a56f; }
+body.dark-mode section { background:#1e1e1e; border-left-color:#10a56f; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
+body.dark-mode .card { background:#2c2c2c; border-left-color:#0b6e4f; box-shadow:0 4px 14px rgba(0,0,0,0.7); }
+body.dark-mode footer { background:#0b6e4f; color:#e0e0e0; }
+body.dark-mode .pdf-btn { background:#086a44; }
+body.dark-mode .pdf-btn:hover { background:#0b8f5a; }
 
-        .logo-container {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-        }
-
-        .logo-container img {
-            height: 85px;
-            border-radius: 8px;
-            background: white;
-            padding: 5px;
-            cursor: pointer;
-        }
-
-        nav {
-            background:white;
-            padding:15px 20px;
-            position: sticky;
-            top:0;
-            box-shadow:0 2px 8px rgba(0,0,0,0.1);
-            z-index:10;
-        }
-
-        nav ul {
-            display:flex;
-            justify-content:center;
-            gap:30px;
-            flex-wrap:wrap;
-            list-style:none;
-        }
-
-        nav a {
-            text-decoration:none;
-            font-weight:600;
-            color:var(--verde-escuro);
-            transition:0.3s;
-        }
-
-        nav a:hover { color:var(--verde-medio); }
-
-        .container {
-            max-width:1000px;
-            margin:40px auto;
-            padding:20px;
-        }
-
-        section {
-            background:white;
-            padding:25px;
-            margin-bottom:30px;
-            border-radius:12px;
-            border-left:6px solid var(--verde-medio);
-            box-shadow:0 4px 12px rgba(0,0,0,0.06);
-            transition:0.3s;
-        }
-
-        section:hover {
-            transform: translateY(-3px);
-            box-shadow:0 6px 18px rgba(0,0,0,0.12);
-        }
-
-        .cards {
-            display:grid;
-            gap:20px;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        }
-
-        .card {
-            background:#fff;
-            padding:20px;
-            border-radius:12px;
-            border-left:5px solid var(--verde-escuro);
-            box-shadow:0 4px 14px rgba(0,0,0,0.08);
-            transition:0.3s;
-        }
-
-        .card:hover { transform: translateY(-5px); }
-
-        h2 { color: var(--verde-escuro); margin-bottom: 15px; }
-        h3 { margin-bottom: 10px; color: var(--verde-escuro); }
-
-        ul { padding-left:20px; }
-        li { margin-bottom:10px; }
-
-        footer {
-            background: var(--verde-escuro);
-            color:white;
-            text-align:center;
-            padding:25px 10px;
-            margin-top:50px;
-        }
-
-        footer p { opacity:0.7; }
-
-        .pdf-btn {
-            display:inline-block;
-            background:#0b8f5a;
-            color:white;
-            padding:15px 25px;
-            border-radius:8px;
-            font-size:1.1rem;
-            text-decoration:none;
-            font-weight:600;
-            transition:0.3s;
-        }
-
-        .pdf-btn:hover {
-            background:#086a44;
-        }
-
-        /* ==============================
-           TEMA ESCURO
-        ============================== */
-        body.dark-mode {
-            background:#121212;
-            color:#e0e0e0;
-        }
-
-        body.dark-mode header { background: linear-gradient(135deg, #0a4d36, #0c704f); color:#e0e0e0; }
-        body.dark-mode nav { background:#1e1e1e; box-shadow:0 2px 8px rgba(255,255,255,0.05); }
-        body.dark-mode nav a { color:#a8f0c6; }
-        body.dark-mode nav a:hover { color: #10a56f; }
-        body.dark-mode section { background:#1e1e1e; border-left-color:#10a56f; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
-        body.dark-mode .card { background:#2c2c2c; border-left-color:#0b6e4f; box-shadow:0 4px 14px rgba(0,0,0,0.7); }
-        body.dark-mode footer { background:#0b6e4f; color:#e0e0e0; }
-        body.dark-mode .pdf-btn { background:#086a44; }
-        body.dark-mode .pdf-btn:hover { background:#0b8f5a; }
-
-        /* ==============================
-           ANIMAÇÃO TREMER
-        ============================== */
-        .shake { animation: shakeAnim .4s ease; }
-        @keyframes shakeAnim {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            50% { transform: translateX(8px); }
-            75% { transform: translateX(-8px); }
-            100% { transform: translateX(0); }
-        }
-    </style>
+/* ==============================
+   ANIMAÇÃO TREMER
+============================== */
+.shake { animation: shakeAnim .4s ease; }
+@keyframes shakeAnim {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-8px); }
+  100% { transform: translateX(0); }
+}
+</style>
 </head>
 <body>
 
-<!-- ==============================
-     LOGIN ULTRA
-============================== -->
+<!-- LOGIN ULTRA -->
 <div id="login-container" style="position: fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:9999; background:#e9f5ec;">
-    <div id="login-box" style="width:360px; background:white; padding:30px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.2); text-align:center; position:relative;">
-        <img id="login-logo" src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" style="width:100px; border-radius:12px; margin-bottom:20px; cursor:pointer;">
-        <h2 style="color:#0b6e4f; margin-bottom:15px;">Acesso Restrito</h2>
-        <p id="mensagem" style="margin-bottom:10px; font-weight:600;"></p>
-        <div style="position:relative; width:100%;">
-            <input id="senha-input" type="password" placeholder="Digite a senha" style="width:100%; padding:14px; border-radius:10px; border:1px solid #aaa; font-size:1rem;">
-            <i id="toggle-eye" class="fa-solid fa-eye" style="position:absolute; top:14px; right:14px; cursor:pointer; color:#0b6e4f;"></i>
-        </div>
-        <button id="btn-login" style="margin-top:20px; width:100%; padding:14px; background:#10a56f; color:white; border:none; border-radius:10px; font-size:1.1rem; cursor:pointer;">Entrar</button>
+  <div id="login-box" style="width:360px; background:white; padding:30px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.2); text-align:center; position:relative;">
+    <img id="login-logo" src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" style="width:100px; border-radius:12px; margin-bottom:20px; cursor:pointer;">
+    <h2 style="color:#0b6e4f; margin-bottom:15px;">Acesso Restrito</h2>
+    <p id="mensagem" style="margin-bottom:10px; font-weight:600;"></p>
+    <div style="position:relative; width:100%;">
+      <input id="senha-input" type="password" placeholder="Digite a senha" style="width:100%; padding:14px; border-radius:10px; border:1px solid #aaa; font-size:1rem;">
+      <i id="toggle-eye" class="fa-solid fa-eye" style="position:absolute; top:14px; right:14px; cursor:pointer; color:#0b6e4f;"></i>
     </div>
+    <button id="btn-login" style="margin-top:20px; width:100%; padding:14px; background:#10a56f; color:white; border:none; border-radius:10px; font-size:1.1rem; cursor:pointer;">Entrar</button>
+  </div>
 </div>
 
-<!-- ==============================
-     PAINEL ULTRA
-============================== -->
+<!-- PAINEL ULTRA -->
 <div id="admin-panel" style="display:none; position:fixed; inset:0; z-index:9998; background:white; padding:40px; overflow-y:auto;">
-    <h1 style="color:#0b6e4f;">Painel de Administração — Ultra</h1>
-    <p style="margin-bottom:30px;">Gerencie tudo aqui.</p>
+  <h1 style="color:#0b6e4f;">Painel de Administração — Ultra</h1>
+  <p style="margin-bottom:30px;">Gerencie tudo aqui.</p>
 
-    <div style="background:#e9f5ec; padding:20px; border-radius:12px; margin-bottom:20px;">
-        <h2>Trocar Senha</h2>
-        <input id="nova-senha" type="text" placeholder="Nova senha" style="padding:10px; width:300px;">
-        <button onclick="salvarNovaSenha()" style="padding:10px 20px;">Salvar</button>
-    </div>
+  <div style="background:#e9f5ec; padding:20px; border-radius:12px; margin-bottom:20px;">
+    <h2>Trocar Senha</h2>
+    <input id="nova-senha" type="text" placeholder="Nova senha" style="padding:10px; width:300px;">
+    <button onclick="salvarNovaSenha()" style="padding:10px 20px;">Salvar</button>
+  </div>
 
-    <div style="background:#e9f5ec; padding:20px; border-radius:12px; margin-bottom:20px;">
-        <h2>Novo Usuário</h2>
-        <input id="novo-user" type="text" placeholder="Nome" style="padding:10px; width:200px;">
-        <input id="novo-pass" type="text" placeholder="Senha" style="padding:10px; width:200px;">
-        <button onclick="criarUsuario()" style="padding:10px 20px;">Criar</button>
-    </div>
+  <div style="background:#e9f5ec; padding:20px; border-radius:12px; margin-bottom:20px;">
+    <h2>Novo Usuário</h2>
+    <input id="novo-user" type="text" placeholder="Nome" style="padding:10px; width:200px;">
+    <input id="novo-pass" type="text" placeholder="Senha" style="padding:10px; width:200px;">
+    <button onclick="criarUsuario()" style="padding:10px 20px;">Criar</button>
+  </div>
 
-    <div style="background:#e9f5ec; padding:20px; border-radius:12px; margin-bottom:20px;">
-        <h2>Logs de Tentativas</h2>
-        <ul id="log-list" style="max-height:150px; overflow:auto;"></ul>
-    </div>
+  <div style="background:#e9f5ec; padding:20px; border-radius:12px; margin-bottom:20px;">
+    <h2>Logs de Tentativas</h2>
+    <ul id="log-list" style="max-height:150px; overflow:auto;"></ul>
+  </div>
 
-    <div style="background:#e9f5ec; padding:20px; border-radius:12px; margin-bottom:20px;">
-        <h2>Tema</h2>
-        <button onclick="temaClaro()">Claro</button>
-        <button onclick="temaEscuro()">Escuro</button>
-    </div>
+  <div style="background:#e9f5ec; padding:20px; border-radius:12px; margin-bottom:20px;">
+    <h2>Tema</h2>
+    <button onclick="temaClaro()">Claro</button>
+    <button onclick="temaEscuro()">Escuro</button>
+  </div>
 
-    <button onclick="resetTotal()" style="background:red; color:white; padding:12px; border:none; border-radius:8px;">RESETAR SISTEMA</button>
-    <br><br>
-    <button onclick="fecharPainel()" style="padding:12px; font-size:1rem;">Fechar Painel</button>
+  <div style="background:#e9f5ec; padding:20px; border-radius:12px; margin-bottom:20px;">
+    <h2>Preferência de Login</h2>
+    <button onclick="setLoginSempre(true)">Sempre pedir senha</button>
+    <button onclick="setLoginSempre(false)">Entrar direto</button>
+  </div>
+
+  <button onclick="resetTotal()" style="background:red; color:white; padding:12px; border:none; border-radius:8px;">RESETAR SISTEMA</button>
+  <br><br>
+  <button onclick="fecharPainel()" style="padding:12px; font-size:1rem;">Fechar Painel</button>
 </div>
 
-<!-- ==============================
-     CONTEÚDO ORIGINAL DO SITE
-============================== -->
+<!-- SEU CONTEÚDO ORIGINAL -->
 <header>
-    <div class="logo-container">
-        <img src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" alt="Logo SAME">
-    </div>
-    <h1>Guia Completo para Conferência de Prontuários</h1>
-    <p>Organização, segurança e qualidade nas informações administrativas.</p>
+  <div class="logo-container">
+    <img src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" alt="Logo SAME">
+  </div>
+  <h1>Guia Completo para Conferência de Prontuários</h1>
+  <p>Organização, segurança e qualidade nas informações administrativas.</p>
 </header>
 
 <nav>
-    <ul>
-        <li><a href="#download">PDF</a></li>
-        <li><a href="#importancia">Importância</a></li>
-        <li><a href="#materiais">Materiais</a></li>
-        <li><a href="#o-que-e">Prontuário</a></li>
-        <li><a href="#preparo">Preparo</a></li>
-        <li><a href="#passos">Passos</a></li>
-        <li><a href="#erros">Erros</a></li>
-        <li><a href="#boas-praticas">Boas práticas</a></li>
-        <li><a href="#fluxo">Fluxo</a></li>
-        <li><a href="#faq">FAQ</a></li>
-    </ul>
+  <ul>
+    <li><a href="#download">PDF</a></li>
+    <li><a href="#importancia">Importância</a></li>
+    <li><a href="#materiais">Materiais</a></li>
+    <li><a href="#o-que-e">Prontuário</a></li>
+    <li><a href="#preparo">Preparo</a></li>
+    <li><a href="#passos">Passos</a></li>
+    <li><a href="#erros">Erros</a></li>
+    <li><a href="#boas-praticas">Boas práticas</a></li>
+    <li><a href="#fluxo">Fluxo</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
 </nav>
 
 <div class="container">
-    <!-- Coloque aqui todas as seções do seu conteúdo original -->
+  <!-- Coloque aqui todas as seções do seu conteúdo original -->
 </div>
 
 <footer>
-    <p>Guia Educativo — Hospital Vila Nova • 2025</p>
-    <p style="font-size:1.2rem; font-weight:700; margin-top:10px;">Registrado por: Yuri Santos Coutinho</p>
-    <p style="font-size:1.2rem; font-weight:700; margin-top:10px;">EMAIL: coutinhoyuri17@gmail.com</p>
+  <p>Guia Educativo — Hospital Vila Nova • 2025</p>
+  <p style="font-size:1.2rem; font-weight:700; margin-top:10px;">Registrado por: Yuri Santos Coutinho</p>
+  <p style="font-size:1.2rem; font-weight:700; margin-top:10px;">EMAIL: coutinhoyuri17@gmail.com</p>
 </footer>
 
 <script>
-/* ==========================
-   SISTEMA ULTRA
-========================== */
+/* SISTEMA ULTRA */
 let sistema = JSON.parse(localStorage.getItem("sistemaUltra")) || {
     versao: "1.0",
-    senhaPrincipal: "1234",         // Coloque aqui a senha inicial
+    senhaPrincipal: "1234",
     usuarios: [{ user: "admin", senha: "admin123" }],
     logs: [],
     tema: "escuro",
-    acessoLiberado: false
+    acessoLiberado: false,
+    loginSempre: true
 };
 
 function salvarSistema(){ localStorage.setItem("sistemaUltra", JSON.stringify(sistema)); }
 
-/* LOGIN */
 let tentativas = 3;
 function logar(tipo, detalhe){ sistema.logs.push(`${new Date().toLocaleString()} - ${tipo} - ${detalhe}`); salvarSistema(); atualizarLogs(); }
 
 const input = document.getElementById("senha-input");
 const btn = document.getElementById("btn-login");
 const loginBox = document.getElementById("login-box");
+
 btn.addEventListener("click", login);
 input.addEventListener("keypress", e => { if(e.key==="Enter") login(); });
 
@@ -300,7 +199,12 @@ function login(){
     if(tentativas<=0){ document.getElementById("mensagem").textContent="Bloqueado..."; setTimeout(()=>window.location.href="https://www.google.com",2000); }
 }
 
-function entrar(){ sistema.acessoLiberado=true; salvarSistema(); document.getElementById("login-container").style.display="none"; logar("ACESSO","Usuário entrou"); }
+function entrar(){ 
+    sistema.acessoLiberado=true; 
+    salvarSistema(); 
+    document.getElementById("login-container").style.display="none"; 
+    logar("ACESSO","Usuário entrou"); 
+}
 
 /* OLHO SENHA */
 const toggleEye = document.getElementById("toggle-eye");
@@ -323,11 +227,12 @@ function criarUsuario(){ const nome=document.getElementById("novo-user").value; 
 function atualizarLogs(){ let logList=document.getElementById("log-list"); logList.innerHTML=""; sistema.logs.forEach(l=>{ let li=document.createElement("li"); li.textContent=l; logList.appendChild(li); }); }
 function temaClaro(){ sistema.tema="claro"; document.body.classList.remove("dark-mode"); salvarSistema(); }
 function temaEscuro(){ sistema.tema="escuro"; document.body.classList.add("dark-mode"); salvarSistema(); }
+function setLoginSempre(valor){ sistema.loginSempre=valor; salvarSistema(); alert(`Opção salva! loginSempre = ${valor ? "Sempre pedir senha" : "Entrar direto"}`); }
 function resetTotal(){ if(confirm("Tem certeza? Tudo será apagado.")){ localStorage.removeItem("sistemaUltra"); location.reload(); } }
 
 /* APLICAR CONFIGURAÇÕES SALVAS */
 if(sistema.tema==="escuro") document.body.classList.add("dark-mode");
-if(sistema.acessoLiberado) document.getElementById("login-container").style.display="none";
+if(!sistema.loginSempre && sistema.acessoLiberado) document.getElementById("login-container").style.display="none";
 </script>
 
 </body>
