@@ -45,13 +45,15 @@ footer p{opacity:0.7;}
 /* PAINEL ADMIN */
 #admin-panel{display:none;position:fixed;top:10%;left:50%;transform:translateX(-50%);width:90%;max-width:500px;background:white;padding:30px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.4);z-index:9998;overflow-y:auto;max-height:80vh;}
 #admin-panel button{margin:5px;padding:8px 12px;cursor:pointer;}
+#admin-panel input, #admin-panel select{width:80%;padding:6px;margin:3px;border-radius:6px;border:1px solid #aaa;}
 
 /* THEMES */
-body.dark-mode header, body.dark-mode footer, body.dark-mode section, body.dark-mode .card{background:#1c1c1c;color:#e0e0e0;border-left-color:#10a56f;}
+body.dark-mode header, body.dark-mode footer, body.dark-mode section, body.dark-mode .card, body.dark-mode #login-box, body.dark-mode #admin-panel{background:#1c1c1c;color:#e0e0e0;border-left-color:#10a56f;}
 body.dark-mode nav a{color:#a0f0b0;}
 body.dark-mode nav a:hover{color:#10f090;}
 body.dark-mode .pdf-btn{background:#10a56f;}
 body.dark-mode .pdf-btn:hover{background:#086a44;}
+body.dark-mode #usuario-input, body.dark-mode #senha-input, body.dark-mode #admin-panel input, body.dark-mode #admin-panel select{background:#2c2c2c;color:#e0e0e0;border:1px solid #555;}
 </style>
 </head>
 <body>
@@ -83,6 +85,7 @@ body.dark-mode .pdf-btn:hover{background:#086a44;}
     <input id="novo-pass" type="text" placeholder="Senha">
     <select id="novo-role">
       <option value="admin">Admin</option>
+      <option value="editor">Editor</option>
       <option value="viewer">Visualizador</option>
     </select>
     <button onclick="criarUsuario()">Criar</button>
@@ -210,10 +213,13 @@ function criarUsuario(){
   const r=document.getElementById("novo-role").value;
   if(u && s){ sistema.usuarios.push({user:u,senha:s,role:r}); salvarSistema(); alert("Usuário criado!"); atualizarLogs(); }
 }
+
 function abrirPainelAdmin(){
-  if(sistema.usuarioAtual && sistema.usuarioAtual.role==="admin"){ document.getElementById("admin-panel").style.display="block"; }
-  else alert("Acesso negado: você não possui permissão!");
+  if(sistema.usuarioAtual && (sistema.usuarioAtual.role==="admin" || sistema.usuarioAtual.role==="editor")){
+    document.getElementById("admin-panel").style.display="block";
+  } else alert("Acesso negado: você não possui permissão!");
 }
+
 function temaClaro(){ document.body.classList.add("light-mode"); document.body.classList.remove("dark-mode"); sistema.tema="claro"; salvarSistema(); }
 function temaEscuro(){ document.body.classList.add("dark-mode"); document.body.classList.remove("light-mode"); sistema.tema="escuro"; salvarSistema(); }
 function fecharPainel(){ document.getElementById("admin-panel").style.display="none"; }
