@@ -12,64 +12,62 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
-body { background:#e9f5ec; color:#333; line-height:1.7; transition:0.3s ease; }
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
+body{background:#e9f5ec;color:#333;line-height:1.7;transition:0.3s ease;}
 
 /* CORES */
-:root { --verde-escuro:#0b6e4f; --verde-medio:#10a56f; --verde-claro:#d4f5df; }
+:root{--verde-escuro:#0b6e4f;--verde-medio:#10a56f;--verde-claro:#d4f5df;}
 
 /* HEADER E NAV */
-header { background:linear-gradient(135deg,var(--verde-escuro),var(--verde-medio)); padding:80px 20px 50px; color:white; text-align:center; position:relative; }
-.logo-container { position:absolute; top:20px; left:20px; }
-.logo-container img { height:85px; border-radius:8px; background:white; padding:5px; cursor:pointer; }
-nav { background:white; padding:15px 20px; position:sticky; top:0; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:10; }
-nav ul { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; list-style:none; }
-nav a { text-decoration:none; font-weight:600; color:var(--verde-escuro); transition:0.3s; }
-nav a:hover { color:var(--verde-medio); }
+header{background:linear-gradient(135deg,var(--verde-escuro),var(--verde-medio));padding:80px 20px 50px;color:white;text-align:center;position:relative;}
+.logo-container{position:absolute;top:20px;left:20px;}
+.logo-container img{height:85px;border-radius:8px;background:white;padding:5px;cursor:pointer;}
+nav{background:white;padding:15px 20px;position:sticky;top:0;box-shadow:0 2px 8px rgba(0,0,0,0.1);z-index:10;}
+nav ul{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;list-style:none;}
+nav a{text-decoration:none;font-weight:600;color:var(--verde-escuro);transition:0.3s;}
+nav a:hover{color:var(--verde-medio);}
 
 /* CONTAINER E SECTIONS */
-.container { max-width:1000px; margin:40px auto; padding:20px; }
-section { background:white; padding:25px; margin-bottom:30px; border-radius:12px; border-left:6px solid var(--verde-medio); box-shadow:0 4px 12px rgba(0,0,0,0.06); transition:0.3s; }
-section:hover { transform:translateY(-3px); box-shadow:0 6px 18px rgba(0,0,0,0.12); }
-.cards { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
-.card { background:#fff; padding:20px; border-radius:12px; border-left:5px solid var(--verde-escuro); box-shadow:0 4px 14px rgba(0,0,0,0.08); transition:0.3s; }
-.card:hover { transform:translateY(-5px); }
-h2 { color:var(--verde-escuro); margin-bottom:15px; }
-h3 { margin-bottom:10px; color:var(--verde-escuro); }
-ul { padding-left:20px; }
-li { margin-bottom:10px; }
+.container{max-width:1000px;margin:40px auto;padding:20px;}
+section{background:white;padding:25px;margin-bottom:30px;border-radius:12px;border-left:6px solid var(--verde-medio);box-shadow:0 4px 12px rgba(0,0,0,0.06);transition:0.3s;}
+section:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+.cards{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
+.card{background:#fff;padding:20px;border-radius:12px;border-left:5px solid var(--verde-escuro);box-shadow:0 4px 14px rgba(0,0,0,0.08);transition:0.3s;}
+.card:hover{transform:translateY(-5px);}
+h2{color:var(--verde-escuro);margin-bottom:15px;}
+h3{margin-bottom:10px;color:var(--verde-escuro);}
+ul{padding-left:20px;}
+li{margin-bottom:10px;}
 
 /* FOOTER */
-footer { background:var(--verde-escuro); color:white; text-align:center; padding:25px 10px; margin-top:50px; }
-footer p { opacity:0.7; }
-.pdf-btn { display:inline-block; background:#0b8f5a; color:white; padding:15px 25px; border-radius:8px; font-size:1.1rem; text-decoration:none; font-weight:600; transition:0.3s; }
-.pdf-btn:hover { background:#086a44; }
+footer{background:var(--verde-escuro);color:white;text-align:center;padding:25px 10px;margin-top:50px;}
+footer p{opacity:0.7;}
+.pdf-btn{display:inline-block;background:#0b8f5a;color:white;padding:15px 25px;border-radius:8px;font-size:1.1rem;text-decoration:none;font-weight:600;transition:0.3s;}
+.pdf-btn:hover{background:#086a44;}
 
 /* TEMA ESCURO */
-body.dark-mode { background:#121212; color:#e0e0e0; }
-body.dark-mode header { background:linear-gradient(135deg,#0a4d36,#0c704f); color:#e0e0e0; }
-body.dark-mode nav { background:#1e1e1e; box-shadow:0 2px 8px rgba(255,255,255,0.05); }
-body.dark-mode nav a { color:#a8f0c6; }
-body.dark-mode nav a:hover { color:#10a56f; }
-body.dark-mode section { background:#1e1e1e; border-left-color:#10a56f; box-shadow:0 4px 12px rgba(0,0,0,0.6); }
-body.dark-mode .card { background:#2c2c2c; border-left-color:#0b6e4f; box-shadow:0 4px 14px rgba(0,0,0,0.7); }
-body.dark-mode footer { background:#0b6e4f; color:#e0e0e0; }
-body.dark-mode .pdf-btn { background:#086a44; }
-body.dark-mode .pdf-btn:hover { background:#0b8f5a; }
+body.dark-mode{background:#121212;color:#e0e0e0;}
+body.dark-mode header{background:linear-gradient(135deg,#0a4d36,#0c704f);color:#e0e0e0;}
+body.dark-mode nav{background:#1e1e1e;box-shadow:0 2px 8px rgba(255,255,255,0.05);}
+body.dark-mode nav a{color:#a8f0c6;}
+body.dark-mode nav a:hover{color:#10a56f;}
+body.dark-mode section{background:#1e1e1e;border-left-color:#10a56f;box-shadow:0 4px 12px rgba(0,0,0,0.6);}
+body.dark-mode .card{background:#2c2c2c;border-left-color:#0b6e4f;box-shadow:0 4px 14px rgba(0,0,0,0.7);}
+body.dark-mode footer{background:#0b6e4f;color:#e0e0e0;}
+body.dark-mode .pdf-btn{background:#086a44;}
+body.dark-mode .pdf-btn:hover{background:#0b8f5a;}
 
 /* LOGIN */
-#login-container { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:9999; background:#e9f5ec; }
-#login-box { width:360px; background:white; padding:30px; border-radius:16px; box-shadow:0 4px 20px rgba(0,0,0,0.2); text-align:center; position:relative; }
-#login-box.shake { animation: shakeAnim .4s ease; }
-@keyframes shakeAnim {0%{transform:translateX(0);}25%{transform:translateX(-8px);}50%{transform:translateX(8px);}75%{transform:translateX(-8px);}100%{transform:translateX(0);}}
-
-/* INPUT SENHA E OLHO */
-#senha-input { width:100%; padding:14px; border-radius:10px; border:1px solid #aaa; font-size:1rem; }
-#toggle-eye { position:absolute; top:14px; right:14px; cursor:pointer; color:#0b6e4f; }
+#login-container{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9999;background:#e9f5ec;}
+#login-box{width:360px;background:white;padding:30px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.2);text-align:center;position:relative;}
+#login-box.shake{animation: shakeAnim .4s ease;}
+@keyframes shakeAnim{0%{transform:translateX(0);}25%{transform:translateX(-8px);}50%{transform:translateX(8px);}75%{transform:translateX(-8px);}100%{transform:translateX(0);}}
+#senha-input{width:100%;padding:14px;border-radius:10px;border:1px solid #aaa;font-size:1rem;}
+#toggle-eye{position:absolute;top:14px;right:14px;cursor:pointer;color:#0b6e4f;}
 
 /* PAINEL ULTRA */
-#admin-panel { display:none; position:fixed; inset:0; z-index:9998; background:white; padding:40px; overflow-y:auto; }
-#admin-panel button { margin:5px; padding:8px 12px; cursor:pointer; }
+#admin-panel{display:none;position:fixed;inset:0;z-index:9998;background:white;padding:40px;overflow-y:auto;}
+#admin-panel button{margin:5px;padding:8px 12px;cursor:pointer;}
 </style>
 </head>
 <body>
@@ -128,7 +126,7 @@ body.dark-mode .pdf-btn:hover { background:#0b8f5a; }
   <button onclick="fecharPainel()">Fechar Painel</button>
 </div>
 
-<!-- SEU CONTEÚDO ORIGINAL -->
+<!-- CONTEÚDO ORIGINAL -->
 <header>
   <div class="logo-container">
     <img src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" alt="Logo SAME">
@@ -153,7 +151,121 @@ body.dark-mode .pdf-btn:hover { background:#0b8f5a; }
 </nav>
 
 <div class="container">
-  <!-- SEÇÕES DO CONTEÚDO AQUI -->
+  <!-- SEÇÕES DO CONTEÚDO (copiado do seu HTML original) -->
+  <section id="download">
+    <h2><i class="fa-solid fa-file-pdf"></i> Baixar PDF</h2>
+    <p>Clique no botão abaixo para baixar o checklist em PDF.</p>
+    <a class="pdf-btn" href="https://seu-link-do-pdf-aqui.com/checklist.pdf" download>
+        <i class="fa-solid fa-download"></i> Baixar PDF
+    </a>
+  </section>
+
+  <section id="importancia">
+    <h2><i class="fa-solid fa-star"></i> Importância da conferência</h2>
+    <ul>
+        <li>Padronização e legibilidade das informações.</li>
+        <li>Correção de dados administrativos.</li>
+        <li>Organização para auditorias internas e externas.</li>
+        <li>Respeito às normas legais e institucionais.</li>
+        <li>Segurança e integridade das informações.</li>
+    </ul>
+  </section>
+
+  <section id="materiais">
+    <h2><i class="fa-solid fa-folder-open"></i> Materiais necessários</h2>
+    <ul>
+        <li>Checklist de conferência oficial.</li>
+        <li>Acesso autorizado ao prontuário.</li>
+        <li>Ferramenta de anotação.</li>
+        <li>Ambiente silencioso e seguro.</li>
+        <li>Caneta.</li>
+        <li>Tira grampos.</li>
+        <li>Carimbos.</li>
+    </ul>
+  </section>
+
+  <section id="o-que-e">
+    <h2><i class="fa-solid fa-notes-medical"></i> O que é um prontuário?</h2>
+    <p>O prontuário reúne informações registradas durante o atendimento e deve manter organização, legibilidade e conformidade institucional.</p>
+  </section>
+
+  <section id="preparo">
+    <h2><i class="fa-solid fa-clipboard-check"></i> Antes de começar</h2>
+    <div class="cards">
+        <div class="card">
+            <i class="fa-solid fa-id-card"></i>
+            <h3>Autorização</h3>
+            <p>Confirme se possui permissão formal.</p>
+        </div>
+
+        <div class="card">
+            <i class="fa-solid fa-shield-halved"></i>
+            <h3>Sigilo</h3>
+            <p>Proteja dados sensíveis conforme a LGPD.</p>
+        </div>
+
+        <div class="card">
+            <i class="fa-solid fa-list-check"></i>
+            <h3>Checklist</h3>
+            <p>Use o checklist oficial da instituição.</p>
+        </div>
+    </div>
+  </section>
+
+  <section id="passos">
+    <h2><i class="fa-solid fa-list-ul"></i> Passo a passo</h2>
+    <ul>
+        <li>Verifique a identificação do paciente.</li>
+        <li>Organize páginas e documentos.</li>
+        <li>Confirme datas e assinaturas.</li>
+        <li>Cheque campos obrigatórios.</li>
+        <li>Valide anexos.</li>
+    </ul>
+  </section>
+
+  <section id="erros">
+    <h2><i class="fa-solid fa-exclamation-triangle"></i> Erros comuns</h2>
+    <ul>
+        <li>Assinaturas faltando.</li>
+        <li>Páginas desorganizadas.</li>
+        <li>Campos incompletos.</li>
+        <li>Folhas ausentes.</li>
+    </ul>
+  </section>
+
+  <section id="boas-praticas">
+    <h2><i class="fa-solid fa-thumbs-up"></i> Boas práticas</h2>
+    <ul>
+        <li>Trabalhe em ambiente silencioso.</li>
+        <li>Checar itens críticos duas vezes.</li>
+        <li>Registrar inconsistências na hora.</li>
+    </ul>
+  </section>
+
+  <section id="fluxo">
+    <h2><i class="fa-solid fa-diagram-project"></i> Fluxo recomendado</h2>
+    <ol>
+        <li>Receber o prontuário.</li>
+        <li>Verificar autorização.</li>
+        <li>Organizar documentos.</li>
+        <li>Aplicar checklist.</li>
+        <li>Registrar irregularidades.</li>
+        <li>Encaminhar correções.</li>
+        <li>Arquivar corretamente.</li>
+    </ol>
+  </section>
+
+  <section id="faq">
+    <h2><i class="fa-solid fa-circle-question"></i> FAQ</h2>
+    <h3>Posso corrigir um prontuário?</h3>
+    <p>Somente o profissional responsável pode corrigir.</p>
+
+    <h3>Posso fotografar o prontuário?</h3>
+    <p>Em geral, não. Informações são sigilosas.</p>
+
+    <h3>Preciso de autorização?</h3>
+    <p>Sempre. O acesso deve ser justificado e formal.</p>
+  </section>
 </div>
 
 <footer>
@@ -177,67 +289,77 @@ let sistema = JSON.parse(localStorage.getItem("sistemaUltra")) || {
 function salvarSistema(){ localStorage.setItem("sistemaUltra", JSON.stringify(sistema)); }
 function logar(tipo,detalhe){ sistema.logs.push(`${new Date().toLocaleString()} - ${tipo} - ${detalhe}`); salvarSistema(); atualizarLogs(); }
 
-/* LOGIN FUNCIONAL */
 document.addEventListener("DOMContentLoaded", function(){
-    // Aplicar tema
+    // Tema
     if(sistema.tema==="escuro") document.body.classList.add("dark-mode");
     else document.body.classList.remove("dark-mode");
 
-    // Mostrar login se necessário
-    if(sistema.loginSempre || !sistema.acessoLiberado){
-        document.getElementById("login-container").style.display="flex";
-    } else {
-        document.getElementById("login-container").style.display="none";
-    }
-
+    // Login
+    const loginContainer = document.getElementById("login-container");
+    const loginBox = document.getElementById("login-box");
     const input = document.getElementById("senha-input");
     const btn = document.getElementById("btn-login");
-    const loginBox = document.getElementById("login-box");
+
+    if(sistema.loginSempre || !sistema.acessoLiberado){
+        loginContainer.style.display="flex";
+    } else {
+        loginContainer.style.display="none";
+    }
 
     btn.addEventListener("click", login);
     input.addEventListener("keypress", e => { if(e.key==="Enter") login(); });
 
     function login(){
-        const valor=input.value;
-        if(valor===sistema.senhaPrincipal || sistema.usuarios.some(u=>u.senha===valor)){
-            entrar(); return;
+        const valor = input.value;
+        const usuarioValido = sistema.usuarios.some(u=>u.senha===valor);
+        if(valor===sistema.senhaPrincipal || usuarioValido){
+            sistema.acessoLiberado=true;
+            salvarSistema();
+            loginContainer.style.display="none";
+            logar("LOGIN","Sucesso");
+            alert("Bem-vindo!");
+        } else {
+            loginBox.classList.add("shake");
+            setTimeout(()=>loginBox.classList.remove("shake"),400);
+            input.value="";
+            logar("LOGIN","Falha: "+valor);
         }
-        sistema.logs.push(`${new Date().toLocaleString()} - ERRO - Senha incorreta`);
-        salvarSistema(); atualizarLogs();
-        loginBox.classList.add("shake");
-        setTimeout(()=>loginBox.classList.remove("shake"),500);
-        input.value="";
     }
 
-    function entrar(){
-        sistema.acessoLiberado=true; salvarSistema();
-        document.getElementById("login-container").style.display="none";
-        logar("ACESSO","Usuário entrou");
-    }
-
-    // Olho senha
+    // Olho
     const toggleEye = document.getElementById("toggle-eye");
-    toggleEye.addEventListener("click", ()=>{
-        if(input.type==="password"){ input.type="text"; toggleEye.classList.replace("fa-eye","fa-eye-slash"); }
-        else{ input.type="password"; toggleEye.classList.replace("fa-eye-slash","fa-eye"); }
+    toggleEye.addEventListener("click",()=>{
+        if(input.type==="password"){ input.type="text"; toggleEye.classList="fa-solid fa-eye-slash"; }
+        else{ input.type="password"; toggleEye.classList="fa-solid fa-eye"; }
     });
-
-    // Painel Ultra
-    let clique=0;
-    document.getElementById("login-logo").addEventListener("click", ()=>{
-        clique++; if(clique>=3){ abrirPainel(); clique=0; }
-    });
-    function abrirPainel(){ document.getElementById("admin-panel").style.display="block"; atualizarLogs(); }
-    window.fecharPainel = function(){ document.getElementById("admin-panel").style.display="none"; }
-
-    window.salvarNovaSenha = function(){ const nova=document.getElementById("nova-senha").value; sistema.senhaPrincipal=nova; salvarSistema(); alert("Senha atualizada!"); }
-    window.criarUsuario = function(){ const nome=document.getElementById("novo-user").value; const pass=document.getElementById("novo-pass").value; sistema.usuarios.push({user:nome,senha:pass}); salvarSistema(); alert("Usuário criado!"); }
-    window.atualizarLogs = function(){ let logList=document.getElementById("log-list"); logList.innerHTML=""; sistema.logs.forEach(l=>{ let li=document.createElement("li"); li.textContent=l; logList.appendChild(li); }); }
-    window.temaClaro = function(){ sistema.tema="claro"; document.body.classList.remove("dark-mode"); salvarSistema(); }
-    window.temaEscuro = function(){ sistema.tema="escuro"; document.body.classList.add("dark-mode"); salvarSistema(); }
-    window.setLoginSempre = function(valor){ sistema.loginSempre=valor; salvarSistema(); alert(`Opção salva! loginSempre = ${valor ? "Sempre pedir senha" : "Entrar direto"}`); }
-    window.resetTotal = function(){ if(confirm("Tem certeza? Tudo será apagado.")){ localStorage.removeItem("sistemaUltra"); location.reload(); } }
 });
+
+// PAINEL ULTRA
+function salvarNovaSenha(){
+    const nova = document.getElementById("nova-senha").value;
+    if(nova){ sistema.senhaPrincipal = nova; salvarSistema(); alert("Senha principal atualizada!"); }
+}
+function criarUsuario(){
+    const u=document.getElementById("novo-user").value;
+    const s=document.getElementById("novo-pass").value;
+    if(u && s){ sistema.usuarios.push({user:u,senha:s}); salvarSistema(); alert("Usuário criado!"); atualizarLogs(); }
+}
+function atualizarLogs(){
+    const ul = document.getElementById("log-list");
+    if(!ul) return;
+    ul.innerHTML="";
+    sistema.logs.slice(-20).forEach(l=>{
+        const li=document.createElement("li");
+        li.textContent=l;
+        ul.appendChild(li);
+    });
+}
+function temaClaro(){ document.body.classList.remove("dark-mode"); sistema.tema="claro"; salvarSistema(); }
+function temaEscuro(){ document.body.classList.add("dark-mode"); sistema.tema="escuro"; salvarSistema(); }
+function setLoginSempre(val){ sistema.loginSempre=val; salvarSistema(); alert("Preferência salva!"); }
+function resetTotal(){ localStorage.removeItem("sistemaUltra"); alert("Sistema resetado! Recarregue a página."); }
+function fecharPainel(){ document.getElementById("admin-panel").style.display="none"; }
 </script>
+
 </body>
 </html>
