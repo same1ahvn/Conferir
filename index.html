@@ -8,7 +8,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-/* RESET E BASE */
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
 body{transition:0.4s ease;background:#121212;color:#e0e0e0;}
 
@@ -71,6 +70,9 @@ body.light-mode .pdf-btn:hover{background:#086a44;}
     <div style="position:relative;width:100%;">
       <input id="senha-input" type="password" placeholder="Digite a senha">
       <i id="toggle-eye" class="fa-solid fa-eye"></i>
+    </div>
+    <div style="margin-top:10px;text-align:left;">
+      <input type="checkbox" id="lembrar-senha"> <label for="lembrar-senha">Lembrar minha senha</label>
     </div>
     <button id="btn-login">Entrar</button>
   </div>
@@ -198,10 +200,20 @@ document.addEventListener("DOMContentLoaded",function(){
     const loginBox = document.getElementById("login-box");
     const input = document.getElementById("senha-input");
     const btn = document.getElementById("btn-login");
+    const lembrar = document.getElementById("lembrar-senha");
 
+    // Preencher senha salva
+    const senhaSalva = localStorage.getItem("senhaUltra");
+    if(senhaSalva){
+        input.value = senhaSalva;
+        lembrar.checked = true;
+    }
+
+    // Aplicar tema
     if(sistema.tema==="escuro") document.body.classList.remove("light-mode");
     else document.body.classList.add("light-mode");
 
+    // Mostrar login se necessário
     if(sistema.loginSempre || !sistema.acessoLiberado){
         loginContainer.style.display="flex";
     } else { loginContainer.style.display="none"; mostrarSecoes(); }
@@ -212,6 +224,10 @@ document.addEventListener("DOMContentLoaded",function(){
         if(valor===sistema.senhaPrincipal || usuarioValido){
             sistema.acessoLiberado=true;
             salvarSistema();
+
+            if(lembrar.checked) localStorage.setItem("senhaUltra", valor);
+            else localStorage.removeItem("senhaUltra");
+
             loginContainer.style.transition="opacity 0.4s ease, transform 0.4s ease";
             loginContainer.style.opacity=0;
             loginContainer.style.transform="scale(0.95)";
@@ -228,22 +244,20 @@ document.addEventListener("DOMContentLoaded",function(){
     btn.addEventListener("click",login);
     input.addEventListener("keypress",e=>{if(e.key==="Enter") login();});
     document.getElementById("toggle-eye").addEventListener("click",()=>{
-        if(input.type==="password"){ input.type="text"; this.className="fa-solid fa-eye-slash"; }
-        else{ input.type="password"; this.className="fa-solid fa-eye"; }
+        if(input.type==="password"){ input.type="text"; document.getElementById("toggle-eye").className="fa-solid fa-eye-slash"; }
+        else{ input.type="password"; document.getElementById("toggle-eye").className="fa-solid fa-eye"; }
     });
-
-    atualizarLogs();
 });
 
 // FUNÇÕES ADMIN
-function salvarNovaSenha(){ 
-    const nova=document.getElementById("nova-senha").value.trim(); 
-    if(nova){ sistema.senhaPrincipal=nova; salvarSistema(); alert("Senha principal atualizada!"); } 
+function salvarNovaSenha(){
+    const ns = document.getElementById("nova-senha").value.trim();
+    if(ns){ sistema.senhaPrincipal=ns; salvarSistema(); alert("Senha principal alterada!"); }
 }
-function criarUsuario(){ 
-    const u=document.getElementById("novo-user").value.trim(); 
-    const s=document.getElementById("novo-pass").value.trim(); 
-    if(u && s){ sistema.usuarios.push({user:u,senha:s}); salvarSistema(); alert("Usuário criado!"); atualizarLogs(); } 
+function criarUsuario(){
+    const u = document.getElementById("novo-user").value.trim();
+    const s = document.getElementById("novo-pass").value.trim();
+    if(u && s){ sistema.usuarios.push({user:u,senha:s}); salvarSistema(); alert("Usuário criado!"); atualizarLogs(); }
 }
 function atualizarLogs(){
     const logUl=document.getElementById("log-list");
@@ -260,10 +274,7 @@ function temaEscuro(){ document.body.classList.remove("light-mode"); sistema.tem
 function setLoginSempre(valor){ sistema.loginSempre=valor; salvarSistema(); alert("Configuração salva!"); }
 function fecharPainel(){ document.getElementById("admin-panel").style.display="none"; }
 function resetTotal(){ if(confirm("Deseja resetar o sistema?")){ localStorage.clear(); location.reload(); } }
-
-function mostrarSecoes(){
-    document.querySelectorAll("section").forEach(s=>s.classList.add("show"));
-}
+function mostrarSecoes(){ document.querySelectorAll("section").forEach(s=>s.classList.add("show")); }
 
 // ANIMAÇÃO SECTIONS
 const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show");});},{threshold:0.2});
