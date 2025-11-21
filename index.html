@@ -56,7 +56,7 @@ footer p{opacity:0.7;}
 .pdf-btn:hover{background:#086a44;}
 
 /* LOGIN */
-#login-container{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9999;background:#e9f5ec;transition:0.3s;}
+#login-container{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:9999;background:rgba(0,0,0,0.5);}
 #login-box{width:360px;background:white;padding:30px;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,0.3);text-align:center;position:relative;transition:0.3s;}
 #login-box.shake{animation: shakeAnim .4s ease;}
 @keyframes shakeAnim{0%{transform:translateX(0);}25%{transform:translateX(-8px);}50%{transform:translateX(8px);}75%{transform:translateX(-8px);}100%{transform:translateX(0);}}
@@ -66,7 +66,7 @@ footer p{opacity:0.7;}
 #btn-login:hover{background:#0b8f5a;}
 
 /* PAINEL ADMIN */
-#admin-panel{display:none;position:fixed;inset:0;z-index:9998;background:white;padding:40px;overflow-y:auto;}
+#admin-panel{display:none;position:fixed;top:10%;left:50%;transform:translateX(-50%);width:90%;max-width:500px;background:white;padding:30px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.4);z-index:9998;overflow:auto;}
 #admin-panel button{margin:5px;padding:8px 12px;cursor:pointer;}
 </style>
 </head>
@@ -89,37 +89,31 @@ footer p{opacity:0.7;}
 <!-- PAINEL ADMIN -->
 <div id="admin-panel">
   <h1 style="color:#0b6e4f;">Painel de Administração</h1>
-
   <div style="margin-top:20px;">
     <h2>Trocar Senha Principal</h2>
     <input id="nova-senha" type="text" placeholder="Nova senha">
     <button onclick="salvarNovaSenha()">Salvar</button>
   </div>
-
   <div style="margin-top:20px;">
     <h2>Criar Usuário</h2>
     <input id="novo-user" type="text" placeholder="Usuário">
     <input id="novo-pass" type="text" placeholder="Senha">
     <button onclick="criarUsuario()">Criar</button>
   </div>
-
   <div style="margin-top:20px;">
     <h2>Logs</h2>
     <ul id="log-list" style="max-height:150px;overflow:auto;"></ul>
   </div>
-
   <div style="margin-top:20px;">
     <h2>Tema</h2>
     <button onclick="temaClaro()">Claro</button>
     <button onclick="temaEscuro()">Escuro</button>
   </div>
-
   <div style="margin-top:20px;">
     <h2>Login</h2>
     <button onclick="setLoginSempre(true)">Sempre pedir senha</button>
     <button onclick="setLoginSempre(false)">Entrar direto</button>
   </div>
-
   <div style="margin-top:20px;">
     <button onclick="resetTotal()" style="background:red;color:white;">RESETAR SISTEMA</button>
     <button onclick="fecharPainel()">Fechar Painel</button>
@@ -128,7 +122,7 @@ footer p{opacity:0.7;}
 
 <!-- CONTEÚDO ORIGINAL -->
 <header>
-  <div class="logo-container">
+  <div class="logo-container" onclick="document.getElementById('admin-panel').style.display='block';">
     <img src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" alt="Logo SAME">
   </div>
   <h1>Guia Completo para Conferência de Prontuários</h1>
@@ -158,7 +152,7 @@ footer p{opacity:0.7;}
         <i class="fa-solid fa-download"></i> Baixar PDF
     </a>
   </section>
-  <!-- Mantém o restante do conteúdo do seu site aqui -->
+  <!-- Continue com o resto do conteúdo do seu site -->
 </div>
 
 <footer>
@@ -170,7 +164,6 @@ footer p{opacity:0.7;}
 <script>
 // SISTEMA ULTRA
 let sistema = JSON.parse(localStorage.getItem("sistemaUltra")) || {
-    versao:"1.0",
     senhaPrincipal:"1234",
     usuarios:[{user:"admin",senha:"admin123"}],
     logs:[],
@@ -227,10 +220,22 @@ document.addEventListener("DOMContentLoaded",function(){
     atualizarLogs();
 });
 
-// PAINEL ADMIN
-function salvarNovaSenha(){ const nova=document.getElementById("nova-senha").value.trim(); if(nova){ sistema.senhaPrincipal=nova; salvarSistema(); alert("Senha principal atualizada!"); } }
-function criarUsuario(){ const u=document.getElementById("novo-user").value.trim(); const s=document.getElementById("novo-pass").value.trim(); if(u&&s){ sistema.usuarios.push({user:u,senha:s}); salvarSistema(); alert("Usuário criado!"); atualizarLogs(); } }
-function atualizarLogs(){ const ul=document.getElementById("log-list"); if(!ul) return; ul.innerHTML=""; sistema.logs.slice(-20).forEach(l=>{ const li=document.createElement("li"); li.textContent=l; ul.appendChild(li); }); }
+// ADMIN
+function salvarNovaSenha(){ 
+    const nova=document.getElementById("nova-senha").value.trim(); 
+    if(nova){ sistema.senhaPrincipal=nova; salvarSistema(); alert("Senha principal atualizada!"); } 
+}
+function criarUsuario(){ 
+    const u=document.getElementById("novo-user").value.trim(); 
+    const s=document.getElementById("novo-pass").value.trim(); 
+    if(u&&s){ sistema.usuarios.push({user:u,senha:s}); salvarSistema(); alert("Usuário criado!"); atualizarLogs(); } 
+}
+function atualizarLogs(){ 
+    const ul=document.getElementById("log-list"); 
+    if(!ul) return; 
+    ul.innerHTML=""; 
+    sistema.logs.slice(-20).forEach(l=>{ const li=document.createElement("li"); li.textContent=l; ul.appendChild(li); }); 
+}
 function temaClaro(){ document.body.classList.remove("dark-mode"); sistema.tema="claro"; salvarSistema(); }
 function temaEscuro(){ document.body.classList.add("dark-mode"); sistema.tema="escuro"; salvarSistema(); }
 function setLoginSempre(val){ sistema.loginSempre=val; salvarSistema(); alert("Preferência salva!"); }
