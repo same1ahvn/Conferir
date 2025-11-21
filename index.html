@@ -78,7 +78,7 @@
             position: sticky;
             top: 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            z-index: 50;
+            z-index: 10001; /* alto para ficar acima do overlay */
         }
         nav ul {
             display:flex;
@@ -149,7 +149,7 @@
             display:flex;
             align-items:center;
             justify-content:center;
-            z-index: 9999;
+            z-index: 9999; /* menor que nav para nav ficar por cima */
         }
         .login-box {
             background: var(--card-bg);
@@ -493,8 +493,19 @@
                 </select>
             </div>
 
+            <!-- NOVA OPÇÃO: Auto-login / Sempre pedir senha -->
+            <div style="margin-top:12px;">
+                <label style="display:block; margin-bottom:6px; font-weight:600;">Preferência de Login</label>
+                <label style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
+                    <input type="radio" name="perfilAutoLogin" value="always" id="perfilAutoAlways"> Sempre pedir senha
+                </label>
+                <label style="display:flex; gap:8px; align-items:center;">
+                    <input type="radio" name="perfilAutoLogin" value="auto" id="perfilAutoAuto"> Entrar automaticamente neste dispositivo
+                </label>
+            </div>
+
             <div style="margin-top:12px; display:flex; gap:8px;">
-                <button onclick="salvarTemaUsuario()" style="flex:1; padding:8px; border-radius:6px; border:none; background:#0b6e4f; color:white; font-weight:700;">Salvar Tema</button>
+                <button onclick="salvarPerfil()" style="flex:1; padding:8px; border-radius:6px; border:none; background:#0b6e4f; color:white; font-weight:700;">Salvar Perfil</button>
                 <button onclick="document.getElementById('perfilModal').style.display='none'" style="flex:1; padding:8px; border-radius:6px; border:none; background:#ddd;">Fechar</button>
             </div>
         </div>
@@ -513,13 +524,23 @@
         const raw = localStorage.getItem(STORAGE_KEY);
         if(!raw){
             const padrao = [
-                { user: "admin", senha: "1234", role: "admin", tema: "light" },
-                { user: "yuri", senha: "1234", role: "viewer", tema: "light" },
+                { user: "admin", senha: "1234", role: "admin", tema: "light", autoLogin: false },
+                { user: "yuri", senha: "1234", role: "viewer", tema: "light", autoLogin: false },
             ];
             localStorage.setItem(STORAGE_KEY, JSON.stringify(padrao));
             return padrao;
         }
-        try { return JSON.parse(raw) } catch(e){ return []; }
+        try {
+            const arr = JSON.parse(raw);
+            // garantir que cada usuário tenha as chaves necessárias (compatibilidade)
+            return arr.map(u => ({
+                user: u.user,
+                senha: u.senha,
+                role: u.role || "viewer",
+                tema: u.tema || "light",
+                autoLogin: typeof u.autoLogin === "boolean" ? u.autoLogin : false
+            }));
+        } catch(e){ return []; }
     }
 
     let usuarios = carregarUsuarios();
@@ -531,7 +552,7 @@
         else document.body.classList.remove("dark");
     }
 
-    // Quando a página carrega, checar sessão
+    // Quando a página carrega, checar sessão e auto-login
     document.addEventListener("DOMContentLoaded", () => {
         // toggler olho - login
         document.getElementById("toggleSenha").addEventListener("click", () => {
@@ -540,11 +561,12 @@
             else { el.type = "password"; document.getElementById("toggleSenha").classList.add("fa-eye"); document.getElementById("toggleSenha").classList.remove("fa-eye-slash"); }
         });
 
-        // if existe sessão
+        // if existe sessão (login por sessão)
         const sessao = localStorage.getItem(STORAGE_USER);
         if(sessao){
             try{
                 const obj = JSON.parse(sessao);
+                usuarios = carregarUsuarios(); // recarregar para garantir atualizações
                 const encontrado = usuarios.find(u => u.user === obj.user);
                 if(encontrado && encontrado.senha === obj.senha){
                     usuarioLogado = encontrado;
@@ -554,7 +576,19 @@
             }catch(e){}
         }
 
-        // Sem sessão: mostrar overlay e aplicar tema default (light)
+        // verificar auto-login por preferência do usuário (ultimoUsuario)
+        const ultimo = localStorage.getItem("ultimoUsuario");
+        if(ultimo){
+            usuarios = carregarUsuarios();
+            const u = usuarios.find(x => x.user === ultimo);
+            if(u && u.autoLogin){
+                usuarioLogado = u;
+                onLogin();
+                return;
+            }
+        }
+
+        // Sem sessão/autologin: mostrar overlay e aplicar tema default (light)
         aplicarTema("light");
         document.getElementById("loginOverlay").style.display = "flex";
     });
@@ -564,6 +598,7 @@
         const u = document.getElementById("userLogin").value.trim();
         const s = document.getElementById("userSenha").value;
 
+        usuarios = carregarUsuarios();
         const encontrado = usuarios.find(x => x.user === u && x.senha === s);
         if(!encontrado){
             // animar shake
@@ -576,6 +611,8 @@
         usuarioLogado = encontrado;
         // salvar sessão (simples)
         localStorage.setItem(STORAGE_USER, JSON.stringify({ user: encontrado.user, senha: encontrado.senha }));
+        // registrar ultimo usuário (para preferência)
+        localStorage.setItem("ultimoUsuario", encontrado.user);
         onLogin();
     }
 
@@ -685,7 +722,7 @@
         if(!nome){ alert("Informe um nome de usuário."); return; }
         if(usuarios.find(u => u.user === nome)){ alert("Usuário já existe."); return; }
 
-        usuarios.push({ user: nome, senha: senha, role: role, tema: "light" });
+        usuarios.push({ user: nome, senha: senha, role: role, tema: "light", autoLogin: false });
         salvarUsuarios();
         document.getElementById("newUserName").value = "";
         document.getElementById("newUserSenha").value = "";
@@ -727,6 +764,14 @@
         if(!usuarioLogado) return alert("Logue primeiro.");
         document.getElementById("perfilNome").textContent = usuarioLogado.user;
         document.getElementById("perfilTema").value = usuarioLogado.tema || "light";
+
+        // setar opção de auto-login no modal
+        if(usuarioLogado.autoLogin){
+            document.getElementById("perfilAutoAuto").checked = true;
+        } else {
+            document.getElementById("perfilAutoAlways").checked = true;
+        }
+
         document.getElementById("perfilModal").style.display = "flex";
 
         // controlar visibilidade de ações: viewers só podem alterar sua própria senha (que já é o caso)
@@ -756,21 +801,38 @@
         alert("Senha alterada com sucesso.");
     }
 
-    // salvar tema escolhido no perfil (aplica a todo site)
-    function salvarTemaUsuario(){
+    // salvar tema e preferência de auto-login no perfil (aplica a todo site)
+    function salvarPerfil(){
         if(!usuarioLogado) return alert("Logue primeiro.");
         const tema = document.getElementById("perfilTema").value;
+        const pref = document.querySelector('input[name="perfilAutoLogin"]:checked')?.value || "always";
+
         // salvar no usuário
         usuarios = usuarios.map(u => {
             if(u.user === usuarioLogado.user){
                 u.tema = tema;
+                u.autoLogin = (pref === "auto");
             }
             return u;
         });
         salvarUsuarios();
+
+        // atualizar objeto atual
         usuarioLogado.tema = tema;
+        usuarioLogado.autoLogin = (pref === "auto");
+
+        // se ativou autoLogin, registrar como ultimoUsuario para permitir login autom. futuro
+        if(usuarioLogado.autoLogin){
+            localStorage.setItem("ultimoUsuario", usuarioLogado.user);
+        } else {
+            // se desativou autoLogin e for o mesmo user salvo, remover o ultimoUsuario
+            const ultimo = localStorage.getItem("ultimoUsuario");
+            if(ultimo === usuarioLogado.user) localStorage.removeItem("ultimoUsuario");
+        }
+
         aplicarTema(tema);
-        alert("Tema salvo para " + usuarioLogado.user);
+        alert("Preferências salvas.");
+        document.getElementById("perfilModal").style.display = "none";
     }
 
     /***** Acessibilidade: detectar Enter no login *****/
