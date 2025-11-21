@@ -208,7 +208,7 @@
             100% { transform: translateX(0) }
         }
 
-        /* ---------- ADMIN PANEL ---------- */
+        /* ---------- ADMIN PANEL (UPDATED) ---------- */
         #adminPanel {
             display:none;
             position: fixed;
@@ -220,18 +220,27 @@
             border-radius: 12px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.25);
             z-index: 10002; /* above nav and overlay */
-            width: 360px;
+            width: 720px;
+            max-width: calc(100% - 40px);
             transition: background .2s, color .2s;
         }
         #adminPanel h3 { margin-bottom:8px; color:var(--verde-escuro); }
-        #adminPanel ul { list-style:none; padding-left:0; max-height:220px; overflow:auto; }
-        #adminPanel li { padding:8px 6px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; gap:8px; }
-        #adminPanel .user-role { font-weight:600; font-size:0.95rem; color:#444; }
-        #adminPanel .btn { padding:6px 8px; border-radius:6px; border:none; cursor:pointer; font-weight:600; }
-        #adminPanel .danger { background:#ff6b6b; color:white; }
-        #adminPanel .muted { background:#ddd; }
-        #adminPanel .create-row { display:flex; gap:8px; margin-top:10px; }
-        #adminPanel input[type="text"], #adminPanel select { padding:8px; border-radius:6px; border:1px solid #ccc; flex:1; }
+        .admin-tabs { display:flex; gap:8px; margin-bottom:10px; }
+        .admin-tabs button { padding:8px 10px; border-radius:8px; border:none; cursor:pointer; background:#eee; font-weight:700; }
+        .admin-tabs button.active { background: var(--verde-escuro); color:white; }
+
+        /* users list */
+        #listaUsuarios { list-style:none; padding:0; margin:0; max-height:260px; overflow:auto; }
+        #listaUsuarios li { padding:10px; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between; gap:12px; align-items:center; }
+        .user-actions { display:flex; gap:8px; }
+
+        /* logs */
+        #logsTable { width:100%; border-collapse: collapse; margin-top:8px; max-height:300px; overflow:auto; display:block; }
+        #logsTable thead { background:#f7f7f7; position:sticky; top:0; }
+        #logsTable th, #logsTable td { padding:8px 10px; border-bottom:1px solid #eee; text-align:left; white-space:nowrap; }
+        #logsWrapper { max-height:340px; overflow:auto; margin-top:6px; }
+
+        .controls-row { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
 
         /* user topbar */
         .user-bar {
@@ -271,9 +280,11 @@
         }
 
         /* small screens */
+        @media (max-width:900px){
+            #adminPanel { width: calc(100% - 32px); left: 16px; right:16px; top:100px; }
+        }
         @media (max-width:640px){
             .login-box{ width:90%; }
-            #adminPanel{ width:calc(100% - 40px); left:20px; top:100px; }
             .user-bar { right:8px; top:100px; }
             nav ul { gap:10px; font-size:0.95rem; }
         }
@@ -303,33 +314,81 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL (aberto clicando na logo ou nav) -->
+    <!-- ADMIN PANEL (aberto clicando na logo ou via botão admin) -->
     <div id="adminPanel" aria-hidden="true">
         <h3>Painel Administrativo</h3>
 
-        <div>
-            <strong>Usuários registrados</strong>
-            <ul id="listaUsuarios"></ul>
+        <div class="admin-tabs">
+            <button id="tabUsers" class="active" onclick="showAdminTab('users')">Usuários</button>
+            <button id="tabLogs" onclick="showAdminTab('logs')">Logs</button>
         </div>
 
-        <div style="margin-top:10px;">
-            <strong>Criar usuário</strong>
-            <div class="create-row">
-                <input id="newUserName" placeholder="usuário" />
-                <select id="newUserRole">
-                    <option value="viewer">viewer</option>
-                    <option value="admin">admin</option>
-                </select>
-            </div>
-            <div class="create-row" style="margin-top:8px;">
-                <input id="newUserSenha" placeholder="senha" />
-                <button class="btn" onclick="criarUsuario()">Criar</button>
+        <div id="adminUsers" class="admin-section">
+            <div>
+                <strong>Usuários registrados</strong>
+                <ul id="listaUsuarios"></ul>
             </div>
 
-            <div style="margin-top:10px; display:flex; gap:8px; justify-content:space-between;">
-                <button class="btn muted" onclick="exportarUsuarios()">Exportar (JSON)</button>
-                <button class="btn danger" onclick="resetarUsuarios()">Resetar para padrões</button>
-                <button class="btn" onclick="fecharAdmin()">Fechar</button>
+            <div style="margin-top:10px;">
+                <strong>Criar usuário</strong>
+                <div class="create-row" style="display:flex; gap:8px; margin-top:8px;">
+                    <input id="newUserName" placeholder="usuário" />
+                    <select id="newUserRole">
+                        <option value="viewer">viewer</option>
+                        <option value="admin">admin</option>
+                    </select>
+                    <input id="newUserSenha" placeholder="senha" style="width:120px;" />
+                    <button class="btn" onclick="criarUsuario()">Criar</button>
+                </div>
+
+                <div style="margin-top:10px; display:flex; gap:8px; justify-content:space-between; flex-wrap:wrap;">
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn muted" onclick="exportarUsuarios()">Exportar (JSON)</button>
+                        <button class="btn danger" onclick="resetarUsuarios()">Resetar padrões</button>
+                    </div>
+                    <div>
+                        <button class="btn" onclick="fecharAdmin()">Fechar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="adminLogs" class="admin-section" style="display:none; margin-top:8px;">
+            <div style="display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
+                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                    <label>Usuário:
+                        <select id="filterUser">
+                            <option value="">Todos</option>
+                        </select>
+                    </label>
+                    <label>Data início: <input type="date" id="filterDateFrom"></label>
+                    <label>Data fim: <input type="date" id="filterDateTo"></label>
+                    <label>Ação:
+                        <select id="filterAction">
+                            <option value="">Todas</option>
+                        </select>
+                    </label>
+                    <button class="btn" onclick="aplicarFiltrosLogs()">Aplicar</button>
+                    <button class="btn muted" onclick="limparFiltrosLogs()">Limpar</button>
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <button class="btn" onclick="exportarLogs()">Exportar logs (JSON)</button>
+                    <button class="btn danger" onclick="limparLogsConfirm()">Limpar logs</button>
+                </div>
+            </div>
+
+            <div id="logsWrapper">
+                <table id="logsTable">
+                    <thead>
+                        <tr>
+                            <th>Data / Hora</th>
+                            <th>Usuário</th>
+                            <th>Ação</th>
+                            <th>Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logsBody"></tbody>
+                </table>
             </div>
         </div>
     </div>
@@ -338,6 +397,7 @@
     <div id="userBar" class="user-bar" style="display:none;">
         <span class="name" id="userNome">Usuário</span>
         <button onclick="abrirPerfil()">Meu Perfil</button>
+        <button id="btnOpenAdmin" onclick="handleNavAdmin()" title="Admin" style="display:none;">Admin</button>
         <button onclick="logout()" title="Sair">Sair</button>
     </div>
 
@@ -365,9 +425,8 @@
             <li><a href="#fluxo">Fluxo</a></li>
             <li><a href="#faq">FAQ</a></li>
 
-            <!-- Novo: Perfil e Admin no nav -->
+            <!-- NOTE: Admin link removed from public nav -->
             <li><a id="navPerfil" onclick="handleNavPerfil()">Perfil</a></li>
-            <li><a id="navAdmin" onclick="handleNavAdmin()">Admin</a></li>
         </ul>
     </nav>
 
@@ -376,7 +435,7 @@
         <section id="download">
             <h2><i class="fa-solid fa-file-pdf"></i> Baixar PDF</h2>
             <p>Clique no botão abaixo para baixar o checklist em PDF.</p>
-            <a class="pdf-btn" href="https://seu-link-do-pdf-aqui.com/checklist.pdf" download>
+            <a id="downloadPdf" class="pdf-btn" href="https://seu-link-do-pdf-aqui.com/checklist.pdf" download>
                 <i class="fa-solid fa-download"></i> Baixar PDF
             </a>
         </section>
@@ -542,11 +601,12 @@
 
     <script>
     /*******************
-     * Gerenciamento de usuários (front-end apenas)
+     * Gerenciamento de usuários e logs (front-end apenas)
      * salva em localStorage
      *******************/
     const STORAGE_KEY = "sistema_usuarios_v1";
     const STORAGE_USER = "sistema_logado_v1";
+    const STORAGE_LOGS = "sistema_logs_v1";
 
     // Carrega usuários do localStorage ou cria padrões
     function carregarUsuarios(){
@@ -571,6 +631,26 @@
         } catch(e){ return []; }
     }
 
+    // Logs helpers
+    function carregarLogs(){ 
+        try { return JSON.parse(localStorage.getItem(STORAGE_LOGS) || "[]"); }
+        catch(e){ return []; }
+    }
+    function salvarLogs(arr){ localStorage.setItem(STORAGE_LOGS, JSON.stringify(arr)); }
+    function logEvent(action, details = ""){
+        const now = new Date();
+        const entry = {
+            ts: now.toISOString(),
+            datetime: now.toLocaleString(),
+            user: usuarioLogado ? usuarioLogado.user : "ANÔNIMO",
+            action,
+            details
+        };
+        const logs = carregarLogs();
+        logs.unshift(entry); // newest first
+        salvarLogs(logs);
+    }
+
     let usuarios = carregarUsuarios();
     let usuarioLogado = null;
 
@@ -582,6 +662,13 @@
     function aplicarTema(tema){
         if(tema === "dark") document.body.classList.add("dark");
         else document.body.classList.remove("dark");
+    }
+
+    // Atualiza UI do botão admin no userBar (visível só para admin)
+    function atualizarUserBarAdminButton(){
+        const btn = document.getElementById("btnOpenAdmin");
+        if(usuarioLogado && usuarioLogado.role === "admin") btn.style.display = "inline-block";
+        else btn.style.display = "none";
     }
 
     // Quando a página carrega, checar sessão e auto-login
@@ -596,6 +683,19 @@
             });
         }
 
+        // click on logo tries to open admin (only admin allowed)
+        document.querySelector(".logo-container").addEventListener("click", () => {
+            if(!usuarioLogado){ alert("Você precisa estar logado como administrador."); return; }
+            if(usuarioLogado.role !== "admin"){ alert("Apenas administradores podem acessar o painel."); return; }
+            abrirAdmin();
+        });
+
+        // download log (track when clicked)
+        document.getElementById("downloadPdf").addEventListener("click", (e) => {
+            // log the action and allow native download
+            setTimeout(() => { logEvent("download_pdf", "Baixou PDF de checklist"); }, 50);
+        });
+
         // if existe sessão (login por sessão)
         const sessao = localStorage.getItem(STORAGE_USER);
         if(sessao){
@@ -605,7 +705,7 @@
                 const encontrado = usuarios.find(u => u.user === obj.user);
                 if(encontrado && encontrado.senha === obj.senha){
                     usuarioLogado = encontrado;
-                    onLogin();
+                    onLogin(false); // false = não registrar novo log de login porque session existe
                     return;
                 }
             }catch(e){}
@@ -618,7 +718,7 @@
             const u = usuarios.find(x => x.user === ultimo);
             if(u && u.autoLogin){
                 usuarioLogado = u;
-                onLogin();
+                onLogin(true);
                 return;
             }
         }
@@ -649,11 +749,12 @@
         localStorage.setItem(STORAGE_USER, JSON.stringify({ user: encontrado.user, senha: encontrado.senha }));
         // registrar ultimo usuário (para preferência)
         localStorage.setItem("ultimoUsuario", encontrado.user);
-        onLogin();
+        onLogin(true);
     }
 
     // Ao logar: esconder overlay, mostrar userbar e aplicar tema do usuário
-    function onLogin(){
+    // param shouldLog indica se registramos o evento de login (true normalmente)
+    function onLogin(shouldLog = true){
         document.getElementById("loginOverlay").style.display = "none";
         mostrarNav();
         document.getElementById("userBar").style.display = "flex";
@@ -664,10 +765,14 @@
 
         // atualizar lista do admin (caso abra)
         atualizarListaUsuarios();
+        atualizarUserBarAdminButton();
+
+        if(shouldLog) logEvent("login", `Usuário ${usuarioLogado.user} realizou login`);
     }
 
     // Logout
     function logout(){
+        if(usuarioLogado) logEvent("logout", `Usuário ${usuarioLogado.user} efetuou logout`);
         usuarioLogado = null;
         localStorage.removeItem(STORAGE_USER);
         document.getElementById("userBar").style.display = "none";
@@ -678,15 +783,13 @@
         // resetar tema default
         aplicarTema("light");
         esconderNav(); // hide nav during login
+
+        // fechar possíveis painéis/modals abertos para evitar "restos" de outra sessão
+        fecharPerfil(false);
+        fecharAdmin(false);
     }
 
     // abrir painel admin (clicando na logo ou nav) — apenas admin
-    document.querySelector(".logo-container").addEventListener("click", () => {
-        if(!usuarioLogado){ alert("Você precisa estar logado como administrador."); return; }
-        if(usuarioLogado.role !== "admin"){ alert("Apenas administradores podem acessar o painel."); return; }
-        abrirAdmin();
-    });
-
     // Nav handlers for Perfil and Admin
     function handleNavAdmin(){
         if(!usuarioLogado){ alert("Faça login primeiro."); return; }
@@ -703,11 +806,36 @@
         document.getElementById("adminPanel").style.display = "block";
         document.getElementById("adminPanel").setAttribute("aria-hidden","false");
         atualizarListaUsuarios();
+        preencherFilterUsers();
+        preencherFilterActions();
+        preencherLogs();
+        logEvent("abrir_admin", "Abriu painel administrativo");
     }
-    function fecharAdmin(){
+    // fecharAdmin optionally log (pass true/false)
+    function fecharAdmin(shouldLog = true){
         document.getElementById("adminPanel").style.display = "none";
         document.getElementById("adminPanel").setAttribute("aria-hidden","true");
         mostrarNav();
+        if(shouldLog && usuarioLogado) logEvent("fechar_admin", "Fechou painel administrativo");
+    }
+
+    // Admin tabs
+    function showAdminTab(tab){
+        document.getElementById("tabUsers").classList.remove("active");
+        document.getElementById("tabLogs").classList.remove("active");
+        document.getElementById("adminUsers").style.display = "none";
+        document.getElementById("adminLogs").style.display = "none";
+        if(tab === "users"){
+            document.getElementById("tabUsers").classList.add("active");
+            document.getElementById("adminUsers").style.display = "block";
+        } else {
+            document.getElementById("tabLogs").classList.add("active");
+            document.getElementById("adminLogs").style.display = "block";
+            // refresh logs view
+            preencherFilterUsers();
+            preencherFilterActions();
+            preencherLogs();
+        }
     }
 
     // Atualizar lista no admin
@@ -724,8 +852,7 @@
             left.innerHTML = `<span style="font-weight:700">${u.user}</span><small style="color:#666">${u.role}</small>`;
 
             const right = document.createElement("div");
-            right.style.display = "flex";
-            right.style.gap = "6px";
+            right.className = "user-actions";
             // botões (admin pode reset/senha e deletar)
             const btnReset = document.createElement("button");
             btnReset.className = "btn muted";
@@ -733,9 +860,14 @@
             btnReset.onclick = () => {
                 const nova = prompt("Nova senha para " + u.user + ":", "1234");
                 if(nova !== null && nova.trim() !== ""){
-                    u.senha = nova;
+                    // update in array
+                    usuarios = carregarUsuarios().map(item => {
+                        if(item.user === u.user) item.senha = nova;
+                        return item;
+                    });
                     salvarUsuarios();
                     atualizarListaUsuarios();
+                    logEvent("reset_senha_admin", `Admin resetou senha de ${u.user}`);
                     alert("Senha alterada.");
                 }
             };
@@ -745,9 +877,10 @@
             btnExcluir.onclick = () => {
                 if(u.user === usuarioLogado.user){ alert("Você não pode excluir o próprio usuário."); return; }
                 if(confirm("Excluir usuário " + u.user + " ?")){
-                    usuarios = usuarios.filter(x => x.user !== u.user);
+                    usuarios = carregarUsuarios().filter(x => x.user !== u.user);
                     salvarUsuarios();
                     atualizarListaUsuarios();
+                    logEvent("excluir_usuario", `Usuário ${u.user} excluído pelo admin ${usuarioLogado.user}`);
                 }
             };
 
@@ -770,6 +903,8 @@
         const senha = document.getElementById("newUserSenha").value || "1234";
         const role = document.getElementById("newUserRole").value;
 
+        usuarios = carregarUsuarios();
+
         if(!nome){ alert("Informe um nome de usuário."); return; }
         if(usuarios.find(u => u.user === nome)){ alert("Usuário já existe."); return; }
 
@@ -778,6 +913,7 @@
         document.getElementById("newUserName").value = "";
         document.getElementById("newUserSenha").value = "";
         atualizarListaUsuarios();
+        logEvent("criar_usuario", `Usuário ${nome} criado pelo admin ${usuarioLogado.user}`);
     }
 
     // salvar usuarios no storage
@@ -787,7 +923,7 @@
 
     // Exportar usuarios (JSON)
     function exportarUsuarios(){
-        const data = JSON.stringify(usuarios, null, 2);
+        const data = JSON.stringify(carregarUsuarios(), null, 2);
         // abrir em nova aba como blob
         const blob = new Blob([data], {type: "application/json"});
         const url = URL.createObjectURL(blob);
@@ -798,6 +934,7 @@
         a.click();
         a.remove();
         URL.revokeObjectURL(url);
+        logEvent("exportar_usuarios", "Exportou lista de usuários (JSON)");
     }
 
     // Resetar para usuários padrões
@@ -807,6 +944,7 @@
         usuarios = carregarUsuarios();
         salvarUsuarios();
         atualizarListaUsuarios();
+        logEvent("resetar_usuarios", "Resetou usuários para padrão");
         alert("Reset concluído.");
     }
 
@@ -825,11 +963,13 @@
 
         esconderNav();
         document.getElementById("perfilModal").style.display = "flex";
+        logEvent("abrir_perfil", `Abriu perfil (${usuarioLogado.user})`);
     }
 
-    function fecharPerfil(){
+    function fecharPerfil(shouldLog = true){
         document.getElementById("perfilModal").style.display = "none";
         mostrarNav();
+        if(shouldLog && usuarioLogado) logEvent("fechar_perfil", `Fechou perfil (${usuarioLogado.user})`);
     }
 
     // trocar senha do usuário logado
@@ -839,7 +979,7 @@
         if(!nova){ alert("Informe a nova senha."); return; }
 
         // atualizar no array e storage
-        usuarios = usuarios.map(u => {
+        usuarios = carregarUsuarios().map(u => {
             if(u.user === usuarioLogado.user){
                 u.senha = nova;
             }
@@ -852,6 +992,7 @@
         localStorage.setItem(STORAGE_USER, JSON.stringify({ user: usuarioLogado.user, senha: usuarioLogado.senha }));
 
         document.getElementById("perfilSenhaNova").value = "";
+        logEvent("trocar_senha", `Usuário ${usuarioLogado.user} alterou sua senha`);
         alert("Senha alterada com sucesso.");
     }
 
@@ -862,7 +1003,7 @@
         const pref = document.querySelector('input[name="perfilAutoLogin"]:checked')?.value || "always";
 
         // salvar no usuário
-        usuarios = usuarios.map(u => {
+        usuarios = carregarUsuarios().map(u => {
             if(u.user === usuarioLogado.user){
                 u.tema = tema;
                 u.autoLogin = (pref === "auto");
@@ -885,16 +1026,118 @@
         }
 
         aplicarTema(tema);
+        logEvent("salvar_perfil", `Usuário ${usuarioLogado.user} salvou preferências (tema:${tema}, autoLogin:${usuarioLogado.autoLogin})`);
         alert("Preferências salvas.");
         fecharPerfil();
     }
 
-    /***** Acessibilidade: detectar Enter no login *****/
+    /***** LOGS: preencher e filtros *****/
+    function preencherFilterUsers(){
+        const sel = document.getElementById("filterUser");
+        if(!sel) return;
+        const users = [...new Set(carregarLogs().map(l => l.user).filter(u=>u))].sort();
+        sel.innerHTML = '<option value="">Todos</option>';
+        users.forEach(u => {
+            const opt = document.createElement("option");
+            opt.value = u;
+            opt.textContent = u;
+            sel.appendChild(opt);
+        });
+    }
+    function preencherFilterActions(){
+        const sel = document.getElementById("filterAction");
+        if(!sel) return;
+        const actions = [...new Set(carregarLogs().map(l => l.action))].sort();
+        sel.innerHTML = '<option value="">Todas</option>';
+        actions.forEach(a => {
+            const opt = document.createElement("option");
+            opt.value = a;
+            opt.textContent = a;
+            sel.appendChild(opt);
+        });
+    }
+
+    function aplicarFiltrosLogs(){
+        preencherLogs();
+    }
+    function limparFiltrosLogs(){
+        document.getElementById("filterUser").value = "";
+        document.getElementById("filterAction").value = "";
+        document.getElementById("filterDateFrom").value = "";
+        document.getElementById("filterDateTo").value = "";
+        preencherLogs();
+    }
+
+    function preencherLogs(){
+        const logs = carregarLogs();
+        const tbody = document.getElementById("logsBody");
+        if(!tbody) return;
+        const userF = document.getElementById("filterUser")?.value || "";
+        const actionF = document.getElementById("filterAction")?.value || "";
+        const dateFrom = document.getElementById("filterDateFrom")?.value;
+        const dateTo = document.getElementById("filterDateTo")?.value;
+
+        const filtered = logs.filter(l => {
+            if(userF && l.user !== userF) return false;
+            if(actionF && l.action !== actionF) return false;
+            if(dateFrom){
+                if(new Date(l.ts) < new Date(dateFrom + "T00:00:00")) return false;
+            }
+            if(dateTo){
+                if(new Date(l.ts) > new Date(dateTo + "T23:59:59")) return false;
+            }
+            return true;
+        });
+
+        tbody.innerHTML = "";
+        filtered.forEach(l => {
+            const tr = document.createElement("tr");
+            const td1 = document.createElement("td"); td1.textContent = l.datetime;
+            const td2 = document.createElement("td"); td2.textContent = l.user;
+            const td3 = document.createElement("td"); td3.textContent = l.action;
+            const td4 = document.createElement("td"); td4.textContent = l.details;
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            tr.appendChild(td3);
+            tr.appendChild(td4);
+            tbody.appendChild(tr);
+        });
+    }
+
+    function exportarLogs(){
+        const logs = carregarLogs();
+        const data = JSON.stringify(logs, null, 2);
+        const blob = new Blob([data], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "logs.json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        logEvent("exportar_logs", "Exportou logs (JSON)");
+    }
+
+    function limparLogsConfirm(){
+        if(!confirm("Limpar todos os logs? Essa ação não pode ser desfeita.")) return;
+        salvarLogs([]);
+        preencherLogs();
+        logEvent("limpar_logs", `Logs limpos pelo admin ${usuarioLogado ? usuarioLogado.user : "?"}`);
+        alert("Logs limpos.");
+    }
+
+    // Hook Enter key on login inputs
     document.getElementById("userSenha").addEventListener("keydown", (e) => {
         if(e.key === "Enter") login();
     });
     document.getElementById("userLogin").addEventListener("keydown", (e) => {
         if(e.key === "Enter") login();
+    });
+
+    // Ensure when page unload logs out? optional (not automatically logging out)
+    window.addEventListener("beforeunload", () => {
+        // no action to prevent losing session - keep it simple
     });
 
     </script>
