@@ -4,19 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Guia de Prontuários</title>
-
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif;}
-body{transition:0.3s ease;}
-
-/* CORES */
-:root{--verde-escuro:#0b6e4f;--verde-medio:#10a56f;--verde-claro:#d4f5df;}
+body{transition:0.3s ease;background:#121212;color:#e0e0e0;}
 
 /* TEMA ESCURO */
 body.dark-mode{background:#121212;color:#e0e0e0;}
@@ -31,26 +24,26 @@ body.dark-mode .pdf-btn{background:#086a44;}
 body.dark-mode .pdf-btn:hover{background:#0b8f5a;}
 
 /* HEADER E NAV */
-header{background:linear-gradient(135deg,var(--verde-escuro),var(--verde-medio));padding:80px 20px 50px;color:white;text-align:center;position:relative;}
-.logo-container{position:absolute;top:20px;left:20px;}
-.logo-container img{height:85px;border-radius:8px;background:white;padding:5px;cursor:pointer;}
+header{background:linear-gradient(135deg,#0b6e4f,#10a56f);padding:80px 20px 50px;color:white;text-align:center;position:relative;}
+.logo-container{position:absolute;top:20px;left:20px;cursor:pointer;}
+.logo-container img{height:85px;border-radius:8px;background:white;padding:5px;}
 nav{background:white;padding:15px 20px;position:sticky;top:0;box-shadow:0 2px 8px rgba(0,0,0,0.1);z-index:10;}
 nav ul{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;list-style:none;}
-nav a{text-decoration:none;font-weight:600;color:var(--verde-escuro);transition:0.3s;}
-nav a:hover{color:var(--verde-medio);}
+nav a{text-decoration:none;font-weight:600;color:#0b6e4f;transition:0.3s;}
+nav a:hover{color:#10a56f;}
 
-/* CONTAINER E SECTIONS */
+/* CONTEÚDO */
 .container{max-width:1000px;margin:40px auto;padding:20px;}
-section{background:white;padding:25px;margin-bottom:30px;border-radius:12px;border-left:6px solid var(--verde-medio);box-shadow:0 4px 12px rgba(0,0,0,0.06);transition:0.3s;}
-section:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+section{background:white;padding:25px;margin-bottom:30px;border-radius:12px;border-left:6px solid #10a56f;box-shadow:0 4px 12px rgba(0,0,0,0.06);transition:0.3s;opacity:0;transform:translateY(20px);}
+section.show{opacity:1;transform:translateY(0);transition:0.6s ease;}
 .cards{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));}
-.card{background:#fff;padding:20px;border-radius:12px;border-left:5px solid var(--verde-escuro);box-shadow:0 4px 14px rgba(0,0,0,0.08);transition:0.3s;}
+.card{background:#fff;padding:20px;border-radius:12px;border-left:5px solid #0b6e4f;box-shadow:0 4px 14px rgba(0,0,0,0.08);transition:0.3s;}
 .card:hover{transform:translateY(-5px);}
-h2{color:var(--verde-escuro);margin-bottom:15px;}
-h3{margin-bottom:10px;color:var(--verde-escuro);}
+h2{color:#0b6e4f;margin-bottom:15px;}
+h3{margin-bottom:10px;color:#0b6e4f;}
 ul{padding-left:20px;}
 li{margin-bottom:10px;}
-footer{background:var(--verde-escuro);color:white;text-align:center;padding:25px 10px;margin-top:50px;}
+footer{background:#0b6e4f;color:white;text-align:center;padding:25px 10px;margin-top:50px;}
 footer p{opacity:0.7;}
 .pdf-btn{display:inline-block;background:#0b8f5a;color:white;padding:15px 25px;border-radius:8px;font-size:1.1rem;text-decoration:none;font-weight:600;transition:0.3s;}
 .pdf-btn:hover{background:#086a44;}
@@ -145,14 +138,43 @@ footer p{opacity:0.7;}
 </nav>
 
 <div class="container">
-  <section id="download">
-    <h2><i class="fa-solid fa-file-pdf"></i> Baixar PDF</h2>
+  <section id="download"><h2><i class="fa-solid fa-file-pdf"></i> Baixar PDF</h2>
     <p>Clique no botão abaixo para baixar o checklist em PDF.</p>
-    <a class="pdf-btn" href="https://seu-link-do-pdf-aqui.com/checklist.pdf" download>
-        <i class="fa-solid fa-download"></i> Baixar PDF
-    </a>
+    <a class="pdf-btn" href="#" download><i class="fa-solid fa-download"></i> Baixar PDF</a>
   </section>
-  <!-- Continue com o resto do conteúdo do seu site -->
+  <section id="importancia"><h2><i class="fa-solid fa-star"></i> Importância da conferência</h2>
+    <ul><li>Padronização e legibilidade das informações.</li><li>Correção de dados administrativos.</li><li>Organização para auditorias internas e externas.</li><li>Respeito às normas legais e institucionais.</li><li>Segurança e integridade das informações.</li></ul>
+  </section>
+  <section id="materiais"><h2><i class="fa-solid fa-folder-open"></i> Materiais necessários</h2>
+    <ul><li>Checklist oficial</li><li>Acesso autorizado ao prontuário</li><li>Ferramenta de anotação</li><li>Ambiente silencioso</li><li>Caneta</li><li>Tira grampos</li><li>Carimbos</li></ul>
+  </section>
+  <section id="o-que-e"><h2><i class="fa-solid fa-notes-medical"></i> O que é um prontuário?</h2>
+    <p>O prontuário reúne informações registradas durante o atendimento e deve manter organização, legibilidade e conformidade institucional.</p>
+  </section>
+  <section id="preparo"><h2><i class="fa-solid fa-clipboard-check"></i> Antes de começar</h2>
+    <div class="cards">
+      <div class="card"><i class="fa-solid fa-id-card"></i><h3>Autorização</h3><p>Confirme se possui permissão formal.</p></div>
+      <div class="card"><i class="fa-solid fa-shield-halved"></i><h3>Sigilo</h3><p>Proteja dados sensíveis conforme a LGPD.</p></div>
+      <div class="card"><i class="fa-solid fa-list-check"></i><h3>Checklist</h3><p>Use o checklist oficial da instituição.</p></div>
+    </div>
+  </section>
+  <section id="passos"><h2><i class="fa-solid fa-list-ul"></i> Passo a passo</h2>
+    <ul><li>Verifique a identificação do paciente.</li><li>Organize páginas e documentos.</li><li>Confirme datas e assinaturas.</li><li>Cheque campos obrigatórios.</li><li>Valide anexos.</li></ul>
+  </section>
+  <section id="erros"><h2><i class="fa-solid fa-exclamation-triangle"></i> Erros comuns</h2>
+    <ul><li>Assinaturas faltando.</li><li>Páginas desorganizadas.</li><li>Campos incompletos.</li><li>Folhas ausentes.</li></ul>
+  </section>
+  <section id="boas-praticas"><h2><i class="fa-solid fa-thumbs-up"></i> Boas práticas</h2>
+    <ul><li>Trabalhe em ambiente silencioso.</li><li>Checar itens críticos duas vezes.</li><li>Registrar inconsistências na hora.</li></ul>
+  </section>
+  <section id="fluxo"><h2><i class="fa-solid fa-diagram-project"></i> Fluxo recomendado</h2>
+    <ol><li>Receber o prontuário.</li><li>Verificar autorização.</li><li>Organizar documentos.</li><li>Aplicar checklist.</li><li>Registrar irregularidades.</li><li>Encaminhar correções.</li><li>Arquivar corretamente.</li></ol>
+  </section>
+  <section id="faq"><h2><i class="fa-solid fa-circle-question"></i> FAQ</h2>
+    <h3>Posso corrigir um prontuário?</h3><p>Somente o profissional responsável pode corrigir.</p>
+    <h3>Posso fotografar o prontuário?</h3><p>Em geral, não. Informações são sigilosas.</p>
+    <h3>Preciso de autorização?</h3><p>Sempre. O acesso deve ser justificado e formal.</p>
+  </section>
 </div>
 
 <footer>
@@ -162,7 +184,7 @@ footer p{opacity:0.7;}
 </footer>
 
 <script>
-// SISTEMA ULTRA
+// SISTEMA LOGIN
 let sistema = JSON.parse(localStorage.getItem("sistemaUltra")) || {
     senhaPrincipal:"1234",
     usuarios:[{user:"admin",senha:"admin123"}],
@@ -171,7 +193,6 @@ let sistema = JSON.parse(localStorage.getItem("sistemaUltra")) || {
     acessoLiberado:false,
     loginSempre:true
 };
-
 function salvarSistema(){ localStorage.setItem("sistemaUltra", JSON.stringify(sistema)); }
 function logar(tipo,detalhe){ sistema.logs.push(`${new Date().toLocaleString()} - ${tipo} - ${detalhe}`); salvarSistema(); atualizarLogs(); }
 
@@ -181,16 +202,11 @@ document.addEventListener("DOMContentLoaded",function(){
     const input = document.getElementById("senha-input");
     const btn = document.getElementById("btn-login");
 
-    // Tema
     if(sistema.tema==="escuro") document.body.classList.add("dark-mode");
-    else document.body.classList.remove("dark-mode");
 
-    // Mostrar login
     if(sistema.loginSempre || !sistema.acessoLiberado){
         loginContainer.style.display="flex";
-    } else {
-        loginContainer.style.display="none";
-    }
+    } else { loginContainer.style.display="none"; }
 
     function login(){
         const valor = input.value.trim();
@@ -200,6 +216,7 @@ document.addEventListener("DOMContentLoaded",function(){
             salvarSistema();
             loginContainer.style.display="none";
             logar("LOGIN","Sucesso");
+            mostrarSecoes();
         } else {
             loginBox.classList.add("shake");
             setTimeout(()=>loginBox.classList.remove("shake"),400);
@@ -210,15 +227,18 @@ document.addEventListener("DOMContentLoaded",function(){
 
     btn.addEventListener("click",login);
     input.addEventListener("keypress",e=>{if(e.key==="Enter") login();});
-
-    const toggleEye = document.getElementById("toggle-eye");
-    toggleEye.addEventListener("click",()=>{
-        if(input.type==="password"){ input.type="text"; toggleEye.classList="fa-solid fa-eye-slash"; }
-        else{ input.type="password"; toggleEye.classList="fa-solid fa-eye"; }
+    document.getElementById("toggle-eye").addEventListener("click",()=>{
+        if(input.type==="password"){ input.type="text"; this.className="fa-solid fa-eye-slash"; }
+        else{ input.type="password"; this.className="fa-solid fa-eye"; }
     });
 
     atualizarLogs();
+    mostrarSecoes();
 });
+
+function mostrarSecoes(){
+    document.querySelectorAll('section').forEach(s=>s.classList.add('show'));
+}
 
 // ADMIN
 function salvarNovaSenha(){ 
@@ -228,19 +248,27 @@ function salvarNovaSenha(){
 function criarUsuario(){ 
     const u=document.getElementById("novo-user").value.trim(); 
     const s=document.getElementById("novo-pass").value.trim(); 
-    if(u&&s){ sistema.usuarios.push({user:u,senha:s}); salvarSistema(); alert("Usuário criado!"); atualizarLogs(); } 
+    if(u && s){ sistema.usuarios.push({user:u,senha:s}); salvarSistema(); alert("Usuário criado!"); atualizarLogs(); } 
 }
-function atualizarLogs(){ 
-    const ul=document.getElementById("log-list"); 
-    if(!ul) return; 
-    ul.innerHTML=""; 
-    sistema.logs.slice(-20).forEach(l=>{ const li=document.createElement("li"); li.textContent=l; ul.appendChild(li); }); 
+function atualizarLogs(){
+    const logUl=document.getElementById("log-list");
+    if(!logUl) return;
+    logUl.innerHTML="";
+    sistema.logs.slice(-10).forEach(l=>{
+        const li=document.createElement("li");
+        li.textContent=l;
+        logUl.appendChild(li);
+    });
 }
 function temaClaro(){ document.body.classList.remove("dark-mode"); sistema.tema="claro"; salvarSistema(); }
 function temaEscuro(){ document.body.classList.add("dark-mode"); sistema.tema="escuro"; salvarSistema(); }
-function setLoginSempre(val){ sistema.loginSempre=val; salvarSistema(); alert("Preferência salva!"); }
-function resetTotal(){ localStorage.removeItem("sistemaUltra"); alert("Sistema resetado! Recarregue a página."); }
+function setLoginSempre(valor){ sistema.loginSempre=valor; salvarSistema(); alert("Configuração salva!"); }
 function fecharPainel(){ document.getElementById("admin-panel").style.display="none"; }
+function resetTotal(){ if(confirm("Deseja resetar o sistema?")){ localStorage.clear(); location.reload(); } }
+
+// ANIMAÇÃO SECTIONS
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show");});},{threshold:0.2});
+document.querySelectorAll("section").forEach(s=>observer.observe(s));
 </script>
 
 </body>
