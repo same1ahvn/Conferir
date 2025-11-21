@@ -8,61 +8,72 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
+/* Reset e básico */
 * {margin:0; padding:0; box-sizing:border-box;}
-body {font-family:'Inter',sans-serif; line-height:1.7; transition:0.3s;}
+body {font-family:'Inter',sans-serif; line-height:1.7; transition:0.3s; background:#e9f5ec; color:#333;}
 a {text-decoration:none;}
-header, footer, section, nav, .container {transition:0.3s;}
-body.dark-mode {background:#121212; color:#eee;}
-body.dark-mode nav {background:#1f1f1f;}
-body.dark-mode header {background:linear-gradient(135deg,#0b6e4f,#10a56f);}
-body.dark-mode section, body.dark-mode .card {background:#1e1e1e; color:#eee;}
+button {cursor:pointer;}
+
+/* Temas */
 body.light-mode {background:#e9f5ec; color:#333;}
-nav {background:white; padding:15px 20px; position:sticky; top:0; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:10;}
-nav ul {display:flex; justify-content:center; gap:30px; flex-wrap:wrap; list-style:none;}
-nav a {font-weight:600; color:#0b6e4f; transition:0.3s;}
-nav a:hover{color:#10a56f;}
-header {background:linear-gradient(135deg,#0b6e4f,#10a56f); color:white; text-align:center; padding:80px 20px 50px; position:relative;}
+body.light-mode header {background:linear-gradient(135deg,#0b6e4f,#10a56f);}
+body.light-mode nav {background:white; color:#0b6e4f;}
+body.light-mode section, body.light-mode .card {background:white; color:#333;}
+body.dark-mode {background:#121212; color:#eee;}
+body.dark-mode header {background:linear-gradient(135deg,#0b6e4f,#10a56f);}
+body.dark-mode nav {background:#1f1f1f; color:#eee;}
+body.dark-mode section, body.dark-mode .card {background:#1e1e1e; color:#eee;}
+
+/* Header */
+header {text-align:center; padding:80px 20px 50px; color:white; position:relative; border-radius:0 0 20px 20px;}
 .logo-container {position:absolute; top:20px; left:20px;}
-.logo-container img {height:85px; border-radius:8px; background:white; padding:5px;}
+.logo-container img {height:85px; border-radius:10px; background:white; padding:5px;}
+
+/* Nav */
+nav {position:sticky; top:0; padding:15px 20px; display:flex; justify-content:center; gap:30px; z-index:10; border-radius:0 0 10px 10px;}
+nav a {font-weight:600; color:inherit; transition:0.3s;}
+nav a:hover{color:#10a56f;}
+
+/* Container */
 .container {max-width:1000px; margin:40px auto; padding:20px;}
-section {background:white; padding:25px; margin-bottom:30px; border-radius:12px; border-left:6px solid #10a56f; box-shadow:0 4px 12px rgba(0,0,0,0.06);}
+
+/* Sections */
+section {padding:25px; margin-bottom:30px; border-radius:12px; border-left:6px solid #10a56f; box-shadow:0 6px 20px rgba(0,0,0,0.08); transition:0.3s; opacity:0; transform:translateY(30px);}
 section.show{opacity:1; transform:translateY(0);}
+
+/* Cards */
 .cards {display:grid; gap:20px; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));}
-.card {background:#fff; padding:20px; border-radius:12px; border-left:5px solid #0b6e4f; box-shadow:0 4px 14px rgba(0,0,0,0.08);}
-h2{color:#0b6e4f;margin-bottom:15px;}
-h3{margin-bottom:10px;color:#0b6e4f;}
-ul{padding-left:20px;} li{margin-bottom:10px;}
-footer{background:#0b6e4f; color:white; text-align:center; padding:25px 10px;}
-footer p{opacity:0.7;}
-.pdf-btn{display:inline-block;background:#0b8f5a;color:white;padding:15px 25px;border-radius:8px;font-size:1.1rem;font-weight:600;transition:0.3s;}
+.card {padding:20px; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.08); transition:0.3s; border-left:5px solid #0b6e4f;}
+.card:hover{transform:translateY(-5px);}
+
+/* Footer */
+footer{background:#0b6e4f; color:white; text-align:center; padding:25px 10px; border-radius:20px 20px 0 0;}
+
+/* PDF Button */
+.pdf-btn{display:inline-block; background:#0b8f5a; color:white; padding:15px 25px; border-radius:8px; font-size:1.1rem; font-weight:600; transition:0.3s;}
 .pdf-btn:hover{background:#086a44;}
 
 /* Login */
-#login-box{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);display:flex;justify-content:center;align-items:center;z-index:1000;}
-#login-box .box{background:white;padding:40px;border-radius:12px;max-width:400px;width:90%;text-align:center;position:relative;transition:0.3s;}
-#login-box input{width:100%;padding:12px 40px 12px 12px;margin:10px 0;border-radius:6px;border:1px solid #ccc;}
-#login-box .btn{background:#0b6e4f;color:white;padding:12px 0;width:100%;border:none;border-radius:6px;font-size:1.1rem;font-weight:600;cursor:pointer;transition:0.3s;}
+#login-box{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center; z-index:1000;}
+#login-box .box{background:white; padding:40px; border-radius:15px; width:350px; max-width:90%; text-align:center; position:relative; box-shadow:0 8px 30px rgba(0,0,0,0.3); transition:0.3s;}
+#login-box input{width:100%; padding:12px 40px 12px 12px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:1rem;}
+#login-box .btn{background:#0b6e4f; color:white; padding:12px 0; width:100%; border:none; border-radius:8px; font-size:1.1rem; font-weight:600; transition:0.3s;}
 #login-box .btn:hover{background:#10a56f;}
-#login-box .eye{position:absolute;right:50px;top:155px;cursor:pointer;color:#555;}
+#login-box .eye{position:absolute; right:50px; top:150px; cursor:pointer; color:#555; transition:0.3s;}
 #login-box .shake{animation:shake 0.4s;}
 @keyframes shake{0%{transform:translateX(0);}25%{transform:translateX(-10px);}50%{transform:translateX(10px);}75%{transform:translateX(-10px);}100%{transform:translateX(0);}}
 
-/* Painel Admin */
-#admin-panel{position:fixed;top:0;right:0;width:300px;height:100%;background:#fff;box-shadow:-2px 0 8px rgba(0,0,0,0.2);padding:20px;display:none;z-index:1001;overflow:auto;border-radius:0 0 0 10px;}
-#admin-panel h3{margin-bottom:10px;color:#0b6e4f;}
-#admin-panel input, #admin-panel select{width:100%;padding:8px;margin:5px 0;border-radius:5px;border:1px solid #ccc;}
-#admin-panel button{margin-top:10px;padding:10px;background:#0b6e4f;color:white;border:none;border-radius:6px;cursor:pointer;}
-#admin-panel button:hover{background:#10a56f;}
-#close-admin{position:absolute;top:10px;right:10px;cursor:pointer;font-size:1.2rem;color:#0b6e4f;}
-/* Viewer Panel */
-#viewer-panel{position:fixed;top:50px;right:20px;width:260px;background:#fff;box-shadow:-2px 2px 12px rgba(0,0,0,0.2);padding:15px;border-radius:12px;display:none;z-index:1001;}
-#viewer-panel h3{color:#0b6e4f;margin-bottom:10px;}
-#viewer-panel button{width:100%;margin-top:8px;padding:10px;background:#0b6e4f;color:white;border:none;border-radius:6px;cursor:pointer;}
-#viewer-panel button:hover{background:#10a56f;}
-#viewer-panel input{width:100%;padding:8px;margin:5px 0;border-radius:5px;border:1px solid #ccc;}
+/* Painel Admin e Viewer */
+#admin-panel, #viewer-panel{position:fixed; top:50px; right:20px; width:300px; background:#fff; box-shadow:-2px 2px 20px rgba(0,0,0,0.2); padding:20px; border-radius:15px; display:none; z-index:1001; max-height:90%; overflow:auto;}
+#admin-panel h3, #viewer-panel h3{color:#0b6e4f; margin-bottom:10px;}
+#admin-panel input, #viewer-panel input, #admin-panel select{width:100%; padding:10px; margin:5px 0; border-radius:8px; border:1px solid #ccc; font-size:1rem;}
+#admin-panel button, #viewer-panel button{width:100%; margin-top:10px; padding:12px; border:none; border-radius:8px; background:#0b6e4f; color:white; font-weight:600; transition:0.3s;}
+#admin-panel button:hover, #viewer-panel button:hover{background:#10a56f;}
+#close-admin{position:absolute; top:10px; right:10px; cursor:pointer; font-size:1.2rem; color:#0b6e4f; transition:0.3s;}
+#close-admin:hover{color:#10a56f;}
 </style>
 </head>
-<body>
+<body class="light-mode">
 
 <!-- LOGIN -->
 <div id="login-box">
@@ -78,39 +89,32 @@ footer p{opacity:0.7;}
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
+<!-- Painéis Admin/Viewer -->
 <div id="admin-panel">
   <i id="close-admin" class="fa-solid fa-xmark" onclick="fecharPainel()"></i>
-  <div id="admin-content">
-    <h3>Painel Admin</h3>
-    <div id="admin-only">
-      <p>Criação de usuário:</p>
-      <input type="text" id="novo-user" placeholder="Novo usuário">
-      <input type="password" id="novo-pass" placeholder="Senha">
-      <select id="novo-role">
-        <option value="admin">Admin</option>
-        <option value="editor">Editor</option>
-        <option value="viewer">Viewer</option>
-      </select>
-      <button onclick="criarUsuario()">Criar Usuário</button>
-      <hr>
-      <h3>Gerenciar Usuários</h3>
-      <select id="remover-user"></select>
-      <button onclick="removerUsuario()">Remover</button>
-      <button onclick="resetarSenha()">Resetar Senha</button>
-    </div>
+  <h3>Painel Admin</h3>
+  <div id="admin-only">
+    <p>Adicionar usuário:</p>
+    <input type="text" id="novo-user" placeholder="Novo usuário">
+    <input type="password" id="novo-pass" placeholder="Senha">
+    <select id="novo-role"><option value="admin">Admin</option><option value="editor">Editor</option><option value="viewer">Viewer</option></select>
+    <button onclick="criarUsuario()">Criar Usuário</button>
     <hr>
-    <h3>Tema</h3>
+    <h3>Gerenciar usuários</h3>
+    <select id="remover-user"></select>
+    <button onclick="removerUsuario()">Remover</button>
+    <button onclick="resetarSenha()">Resetar Senha</button>
+    <hr>
+    <h3>Alterar tema</h3>
     <button onclick="temaClaro()">Claro</button>
     <button onclick="temaEscuro()">Escuro</button>
     <hr>
-    <h3>Alterar sua senha</h3>
+    <h3>Alterar minha senha</h3>
     <input type="password" id="nova-senha" placeholder="Nova senha">
     <button onclick="alterarSenha()">Alterar Senha</button>
   </div>
 </div>
 
-<!-- VIEWER PANEL -->
 <div id="viewer-panel">
   <h3>Painel Viewer</h3>
   <h4>Tema</h4>
@@ -147,7 +151,7 @@ footer p{opacity:0.7;}
 </nav>
 
 <div class="container">
-  <!-- Conteúdo do site permanece completo -->
+  <!-- TODO: Conteúdo completo do site, PDF, seções, cards -->
 </div>
 
 <footer>
@@ -157,17 +161,12 @@ footer p{opacity:0.7;}
 </footer>
 
 <script>
-let sistema={usuarios:[
-  {user:"admin",senha:"admin123",role:"admin"},
-  {user:"editor",senha:"editor123",role:"editor"},
-  {user:"viewer",senha:"viewer123",role:"viewer"}
-],tema:"claro",usuarioAtual:null};
-
+// Sistema de usuários
+let sistema={usuarios:[{user:"admin",senha:"admin123",role:"admin"},{user:"editor",senha:"editor123",role:"editor"},{user:"viewer",senha:"viewer123",role:"viewer"}],tema:"claro",usuarioAtual:null};
 if(localStorage.getItem("sistema")) sistema=JSON.parse(localStorage.getItem("sistema"));
-
 function salvarSistema(){localStorage.setItem("sistema",JSON.stringify(sistema));}
 
-// LOGIN
+// Login
 document.addEventListener("DOMContentLoaded",()=>{
   const loginBox=document.getElementById("login-box");
   const usuarioInput=document.getElementById("usuario");
@@ -182,14 +181,8 @@ document.addEventListener("DOMContentLoaded",()=>{
       sistema.usuarioAtual=encontrado; salvarSistema();
       loginBox.style.display="none";
       aplicarTema();
-      if(encontrado.role==="admin"||encontrado.role==="editor"){
-        document.getElementById("admin-panel").style.display="block";
-        document.getElementById("admin-only").style.display="block";
-        atualizarRemoverSelect();
-      } else {
-        document.getElementById("viewer-panel").style.display="block";
-      }
-      alert("Bem-vindo "+encontrado.user+"!");
+      if(encontrado.role==="admin"||encontrado.role==="editor"){document.getElementById("admin-panel").style.display="block"; atualizarRemoverSelect();}
+      else{document.getElementById("viewer-panel").style.display="block";}
     } else{
       loginBox.classList.add("shake");
       setTimeout(()=>loginBox.classList.remove("shake"),400);
@@ -210,63 +203,25 @@ document.addEventListener("DOMContentLoaded",()=>{
   aplicarTema();
 });
 
-// Funções Admin
-function criarUsuario(){
-  const u=document.getElementById("novo-user").value.trim();
-  const s=document.getElementById("novo-pass").value.trim();
-  const r=document.getElementById("novo-role").value;
-  if(u && s){ sistema.usuarios.push({user:u,senha:s,role:r}); salvarSistema(); alert("Usuário criado!"); atualizarRemoverSelect();}
-}
-function atualizarRemoverSelect(){
-  const select=document.getElementById("remover-user");
-  select.innerHTML="";
-  sistema.usuarios.forEach(u=>{
-    if(u.user!==sistema.usuarioAtual.user) select.innerHTML+=`<option value="${u.user}">${u.user} (${u.role})</option>`;
-  });
-}
-function removerUsuario(){
-  const sel=document.getElementById("remover-user");
-  const user=sel.value;
-  sistema.usuarios=sistema.usuarios.filter(u=>u.user!==user);
-  salvarSistema();
-  atualizarRemoverSelect();
-  alert("Usuário removido!");
-}
-function resetarSenha(){
-  const sel=document.getElementById("remover-user");
-  const user=sel.value;
-  let u=sistema.usuarios.find(x=>x.user===user);
-  if(u){ u.senha="1234"; salvarSistema(); alert("Senha resetada para 1234");}
-}
+// Admin
+function criarUsuario(){const u=document.getElementById("novo-user").value.trim(); const s=document.getElementById("novo-pass").value.trim(); const r=document.getElementById("novo-role").value; if(u && s){ sistema.usuarios.push({user:u,senha:s,role:r}); salvarSistema(); alert("Usuário criado!"); atualizarRemoverSelect();}}
+function atualizarRemoverSelect(){const select=document.getElementById("remover-user"); select.innerHTML=""; sistema.usuarios.forEach(u=>{if(u.user!==sistema.usuarioAtual.user) select.innerHTML+=`<option value="${u.user}">${u.user} (${u.role})</option>`;});}
+function removerUsuario(){const sel=document.getElementById("remover-user"); const user=sel.value; sistema.usuarios=sistema.usuarios.filter(u=>u.user!==user); salvarSistema(); atualizarRemoverSelect(); alert("Usuário removido!");}
+function resetarSenha(){const sel=document.getElementById("remover-user"); const user=sel.value; let u=sistema.usuarios.find(x=>x.user===user); if(u){u.senha="1234"; salvarSistema(); alert("Senha resetada para 1234");}}
 
-// Funções Viewer
-function alterarSenhaViewer(){
-  const nova=document.getElementById("nova-senha-viewer").value.trim();
-  if(nova){
-    sistema.usuarioAtual.senha=nova; salvarSistema();
-    alert("Senha alterada com sucesso!");
-    document.getElementById("nova-senha-viewer").value="";
-  }
-}
+// Viewer
+function alterarSenhaViewer(){const nova=document.getElementById("nova-senha-viewer").value.trim(); if(nova){sistema.usuarioAtual.senha=nova; salvarSistema(); alert("Senha alterada!"); document.getElementById("nova-senha-viewer").value="";}}
 
-// Funções comuns
-function alterarSenha(){
-  const nova=document.getElementById("nova-senha").value.trim();
-  if(nova){
-    sistema.usuarioAtual.senha=nova; salvarSistema();
-    alert("Senha alterada com sucesso!");
-    document.getElementById("nova-senha").value="";
-  }
-}
+// Comum
+function alterarSenha(){const nova=document.getElementById("nova-senha").value.trim(); if(nova){sistema.usuarioAtual.senha=nova; salvarSistema(); alert("Senha alterada!"); document.getElementById("nova-senha").value="";}}
 function temaClaro(){document.body.classList.add("light-mode"); document.body.classList.remove("dark-mode"); sistema.tema="claro"; salvarSistema();}
 function temaEscuro(){document.body.classList.add("dark-mode"); document.body.classList.remove("light-mode"); sistema.tema="escuro"; salvarSistema();}
 function fecharPainel(){document.getElementById("admin-panel").style.display="none";}
 function aplicarTema(){if(sistema.tema==="escuro") temaEscuro(); else temaClaro();}
 
-// Animação seções
+// Seções animadas
 const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show");});},{threshold:0.2});
 document.querySelectorAll("section").forEach(s=>observer.observe(s));
 </script>
-
 </body>
 </html>
