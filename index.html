@@ -1,240 +1,786 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Como Conferir Prontuários</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Como Conferir Prontuários — Sistema</title>
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-<!-- Ícones -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<style>
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Inter',sans-serif; line-height:1.7; transition:0.3s; background:#e9f5ec; color:#333; }
-:root { --verde-escuro:#0b6e4f; --verde-medio:#10a56f; --verde-claro:#d4f5df; }
+    <style>
+        /* Reset & base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root{
+            --bg: #e9f5ec;
+            --text: #222;
+            --verde-escuro: #0b6e4f;
+            --verde-medio: #10a56f;
+            --card-bg: #fff;
+            --nav-bg: #fff;
+            --header-gradient-start: #0b6e4f;
+            --header-gradient-end: #10a56f;
+        }
+        html,body { height:100%; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            transition: background .25s, color .25s;
+        }
 
-/* Cabeçalho */
-header { background: linear-gradient(135deg,var(--verde-escuro),var(--verde-medio)); padding:80px 20px 50px; color:white; text-align:center; position:relative; transition:0.3s; }
-.logo-container { position:absolute; top:20px; left:20px; }
-.logo-container img { height:85px; border-radius:8px; background:white; padding:5px; }
+        /* Dark theme overrides */
+        body.dark {
+            --bg: #111214;
+            --text: #e8e8e8;
+            --card-bg: #1f1f1f;
+            --nav-bg: #181818;
+            --header-gradient-start: #044b33;
+            --header-gradient-end: #0b8f5a;
+        }
 
-/* Navegação */
-nav { background:white; padding:15px 20px; position:sticky; top:0; box-shadow:0 2px 8px rgba(0,0,0,0.1); z-index:10; }
-nav ul { display:flex; justify-content:center; gap:30px; flex-wrap:wrap; list-style:none; }
-nav a { text-decoration:none; font-weight:600; color:var(--verde-escuro); transition:0.3s; }
-nav a:hover { color:var(--verde-medio); }
+        header {
+            background: linear-gradient(135deg, var(--header-gradient-start), var(--header-gradient-end));
+            padding: 80px 20px 50px;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
 
-/* Container e seções */
-.container { max-width:1000px; margin:40px auto; padding:20px; }
-section { background:white; padding:25px; margin-bottom:30px; border-radius:12px; border-left:6px solid var(--verde-medio); box-shadow:0 4px 12px rgba(0,0,0,0.06); transition:0.3s; }
-section:hover { transform:translateY(-3px); box-shadow:0 6px 18px rgba(0,0,0,0.12); }
+        .logo-container {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            cursor: pointer;
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+        .logo-container img {
+            height: 70px;
+            border-radius: 8px;
+            background: white;
+            padding: 5px;
+        }
+        .logo-label {
+            color: white;
+            font-weight: 700;
+            letter-spacing: .3px;
+        }
 
-/* Cards */
-.cards { display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
-.card { background:#fff; padding:20px; border-radius:12px; border-left:5px solid var(--verde-escuro); box-shadow:0 4px 14px rgba(0,0,0,0.08); transition:0.3s; }
-.card:hover { transform:translateY(-5px); }
+        nav {
+            background: var(--nav-bg);
+            padding: 12px 18px;
+            position: sticky;
+            top: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            z-index: 50;
+        }
+        nav ul {
+            display:flex;
+            justify-content:center;
+            gap:22px;
+            list-style:none;
+            flex-wrap:wrap;
+        }
+        nav a {
+            text-decoration:none;
+            font-weight:600;
+            color: var(--verde-escuro);
+            transition: .2s;
+        }
+        nav a:hover { color: var(--verde-medio); }
 
-/* Tipografia */
-h2 { color:var(--verde-escuro); margin-bottom:15px; }
-h3 { margin-bottom:10px; color:var(--verde-escuro); }
-ul { padding-left:20px; }
-li { margin-bottom:10px; }
+        .container {
+            max-width: 1000px;
+            margin: 36px auto;
+            padding: 20px;
+        }
+        section {
+            background: var(--card-bg);
+            padding: 22px;
+            margin-bottom: 26px;
+            border-radius: 12px;
+            border-left: 6px solid var(--verde-medio);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            transition: transform .2s, box-shadow .2s, background .2s, color .2s;
+        }
+        section:hover { transform: translateY(-4px); box-shadow: 0 8px 18px rgba(0,0,0,0.12); }
+        .cards { display:grid; gap:16px; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); }
+        .card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 10px;
+            border-left: 5px solid var(--verde-escuro);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+        }
 
-/* Footer */
-footer { background:var(--verde-escuro); color:white; text-align:center; padding:25px 10px; margin-top:50px; }
-footer p { opacity:0.7; }
+        h1 { font-size:1.8rem; margin-bottom:8px; }
+        h2 { color: var(--verde-escuro); margin-bottom:12px; }
+        h3 { margin-bottom:8px; color: var(--verde-escuro); }
 
-/* Botão PDF */
-.pdf-btn { display:inline-block; background:#0b8f5a; color:white; padding:15px 25px; border-radius:8px; font-size:1.1rem; text-decoration:none; font-weight:600; transition:0.3s; }
-.pdf-btn:hover { background:#086a44; }
+        footer {
+            background: var(--verde-escuro);
+            color: white;
+            text-align:center;
+            padding:22px 12px;
+            margin-top:40px;
+        }
 
-/* Login Overlay */
-#login-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); display:flex; justify-content:center; align-items:center; z-index:999; }
-#login-box { background:white; padding:40px; border-radius:12px; width:350px; text-align:center; position:relative; box-shadow:0 10px 25px rgba(0,0,0,0.2); animation:fadeIn 0.5s ease; }
-#login-box h2 { margin-bottom:20px; color:var(--verde-escuro); }
-#login-box input { width:100%; padding:12px 10px; margin:10px 0; border-radius:8px; border:1px solid #ccc; font-size:1rem; }
-#login-box button { padding:12px 20px; border:none; background:var(--verde-medio); color:white; font-weight:600; border-radius:8px; cursor:pointer; transition:0.3s; }
-#login-box button:hover { background:var(--verde-escuro); }
-#toggle-eye { position:absolute; right:50px; top:153px; cursor:pointer; color:#333; }
+        .pdf-btn {
+            display:inline-block;
+            background: #0b8f5a;
+            color: white;
+            padding:12px 18px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;
+        }
 
-/* Painéis */
-.panel { position:fixed; top:60px; right:20px; width:300px; background:white; border-radius:12px; padding:20px; box-shadow:0 10px 25px rgba(0,0,0,0.2); z-index:998; display:none; transition:0.3s; }
-.panel h3 { margin-bottom:15px; color:var(--verde-escuro); }
-.panel button { margin-top:10px; padding:10px 15px; border:none; border-radius:8px; background:var(--verde-medio); color:white; cursor:pointer; transition:0.3s; }
-.panel button:hover { background:var(--verde-escuro); }
+        /* ---------- LOGIN OVERLAY ---------- */
+        #loginOverlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index: 9999;
+        }
+        .login-box {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            width: 360px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            color: var(--text);
+            transition: background .2s, color .2s;
+        }
+        .login-box h2 { text-align:center; margin-bottom:14px; color:var(--verde-escuro); }
+        .login-box label { font-weight:600; display:block; margin-top:10px; margin-bottom:6px; }
+        .login-box input[type="text"],
+        .login-box input[type="password"],
+        .login-box input[type="email"] {
+            width:100%;
+            padding:10px 12px;
+            border-radius:8px;
+            border:1px solid #ddd;
+            background: #fff;
+            color: #222;
+        }
+        .login-box .password-wrapper { position:relative; }
+        .login-box .password-wrapper i {
+            position:absolute;
+            right:12px;
+            top:50%;
+            transform:translateY(-50%);
+            cursor:pointer;
+            color: #666;
+        }
+        .login-box button {
+            width:100%;
+            padding:10px 12px;
+            margin-top:16px;
+            border-radius:8px;
+            border:none;
+            background:var(--verde-medio);
+            color:white;
+            font-weight:700;
+            cursor:pointer;
+        }
 
-/* Dark Mode */
-body.dark-mode { background:#121212; color:#f5f5f5; }
-body.dark-mode header { color:#f5f5f5; }
-body.dark-mode section, body.dark-mode .card, body.dark-mode nav, body.dark-mode .panel { background:#1f1f1f; color:#f5f5f5; }
-body.dark-mode nav a { color:#f5f5f5; }
-body.dark-mode nav a:hover { color:#10a56f; }
-body.dark-mode #login-box { background:#1f1f1f; color:#f5f5f5; border:1px solid #333; }
-body.dark-mode #login-box input { background:#333; color:#f5f5f5; border:1px solid #555; }
-body.dark-mode #toggle-eye { color:#f5f5f5; }
+        @keyframes shake {
+            0% { transform: translateX(0) }
+            20% { transform: translateX(-6px) }
+            40% { transform: translateX(6px) }
+            60% { transform: translateX(-6px) }
+            80% { transform: translateX(6px) }
+            100% { transform: translateX(0) }
+        }
 
-/* Animações */
-@keyframes fadeIn { from {opacity:0; transform:translateY(-20px);} to {opacity:1; transform:translateY(0);} }
-.shake { animation: shake 0.3s; }
-@keyframes shake { 0%{transform:translateX(0);}25%{transform:translateX(-5px);}50%{transform:translateX(5px);}75%{transform:translateX(-5px);}100%{transform:translateX(0);} }
+        /* ---------- ADMIN PANEL ---------- */
+        #adminPanel {
+            display:none;
+            position: fixed;
+            top: 86px;
+            left: 20px;
+            background: var(--card-bg);
+            color: var(--text);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+            z-index: 9998;
+            width: 360px;
+            transition: background .2s, color .2s;
+        }
+        #adminPanel h3 { margin-bottom:8px; color:var(--verde-escuro); }
+        #adminPanel ul { list-style:none; padding-left:0; max-height:220px; overflow:auto; }
+        #adminPanel li { padding:8px 6px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+        #adminPanel .user-role { font-weight:600; font-size:0.95rem; color:#444; }
+        #adminPanel .btn { padding:6px 8px; border-radius:6px; border:none; cursor:pointer; font-weight:600; }
+        #adminPanel .danger { background:#ff6b6b; color:white; }
+        #adminPanel .muted { background:#ddd; }
+        #adminPanel .create-row { display:flex; gap:8px; margin-top:10px; }
+        #adminPanel input[type="text"], #adminPanel select { padding:8px; border-radius:6px; border:1px solid #ccc; flex:1; }
 
-</style>
+        /* user topbar */
+        .user-bar {
+            position: fixed;
+            right: 16px;
+            top: 86px;
+            background: var(--card-bg);
+            color: var(--text);
+            padding:8px 12px;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            z-index: 60;
+            display:flex;
+            gap:10px;
+            align-items:center;
+        }
+        .user-bar .name { font-weight:700; }
+        .user-bar button { padding:6px 10px; border-radius:8px; border:none; cursor:pointer; background:var(--verde-medio); color:white; font-weight:700; }
+
+        /* small screens */
+        @media (max-width:640px){
+            .login-box{ width:90%; }
+            #adminPanel{ width:calc(100% - 40px); left:20px; top:100px; }
+            .user-bar { right:8px; top:100px; }
+        }
+
+    </style>
 </head>
-
 <body>
+    <!-- LOGIN OVERLAY -->
+    <div id="loginOverlay" aria-hidden="false">
+        <div class="login-box" id="loginBox" role="dialog" aria-labelledby="loginTitle">
+            <h2 id="loginTitle">Acessar sistema</h2>
 
-<!-- LOGIN -->
-<div id="login-overlay">
-  <div id="login-box">
-    <h2>Login</h2>
-    <input type="text" id="login-user" placeholder="Usuário">
-    <input type="password" id="login-pass" placeholder="Senha">
-    <i class="fa-solid fa-eye" id="toggle-eye"></i>
-    <button onclick="entrar()">Entrar</button>
-  </div>
-</div>
+            <label for="userLogin">Usuário</label>
+            <input id="userLogin" type="text" autocomplete="username" placeholder="Digite seu usuário">
 
-<!-- PAINÉIS -->
-<div class="panel" id="admin-panel">
-  <h3>Painel Admin</h3>
-  <input type="text" id="novo-user" placeholder="Novo usuário">
-  <input type="password" id="novo-pass" placeholder="Senha">
-  <select id="novo-role"><option value="admin">Admin</option><option value="viewer">Viewer</option></select>
-  <button onclick="criarUsuario()">Criar</button>
-  <select id="remover-user"></select>
-  <button onclick="removerUsuario()">Remover</button>
-  <button onclick="resetarSenha()">Resetar Senha</button>
-  <button onclick="fecharPainel()">Fechar</button>
-</div>
+            <label for="userSenha">Senha</label>
+            <div class="password-wrapper">
+                <input id="userSenha" type="password" autocomplete="current-password" placeholder="Digite sua senha">
+                <i class="fa-solid fa-eye" id="toggleSenha" title="Mostrar/ocultar senha" aria-hidden="true"></i>
+            </div>
 
-<div class="panel" id="viewer-panel">
-  <h3>Painel Viewer</h3>
-  <input type="password" id="nova-senha-viewer" placeholder="Nova senha">
-  <button onclick="alterarSenhaViewer()">Alterar senha</button>
-  <button onclick="temaClaro()">Tema Claro</button>
-  <button onclick="temaEscuro()">Tema Escuro</button>
-  <button onclick="fecharPainel()">Fechar</button>
-</div>
+            <button id="btnEntrar" onclick="login()">Entrar</button>
 
-<!-- SEU CONTEÚDO ORIGINAL -->
-<header>
-    <div class="logo-container">
-        <img src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" alt="Logo SAME">
+            <p style="text-align:center; margin-top:10px; font-size:0.9rem; color:#666;">
+                Usuários exemplo: <strong>admin / 1234</strong> (admin) • <strong>yuri / 1234</strong> (viewer)
+            </p>
+        </div>
     </div>
-    <h1>Guia Completo para Conferência de Prontuários</h1>
-    <p>Organização, segurança e qualidade nas informações administrativas.</p>
-</header>
 
-<nav>
-    <ul>
-        <li><a href="#download">PDF</a></li>
-        <li><a href="#importancia">Importância</a></li>
-        <li><a href="#materiais">Materiais</a></li>
-        <li><a href="#o-que-e">Prontuário</a></li>
-        <li><a href="#preparo">Preparo</a></li>
-        <li><a href="#passos">Passos</a></li>
-        <li><a href="#erros">Erros</a></li>
-        <li><a href="#boas-praticas">Boas práticas</a></li>
-        <li><a href="#fluxo">Fluxo</a></li>
-        <li><a href="#faq">FAQ</a></li>
-    </ul>
-</nav>
+    <!-- ADMIN PANEL (aberto clicando na logo) -->
+    <div id="adminPanel" aria-hidden="true">
+        <h3>Painel Administrativo</h3>
 
-<div class="container">
-    <!-- SEU CONTEÚDO SEÇÕES AQUI, ex: download, importância, etc. -->
-    <!-- Copie exatamente suas seções originais aqui -->
-</div>
+        <div>
+            <strong>Usuários registrados</strong>
+            <ul id="listaUsuarios"></ul>
+        </div>
 
-<footer>
-  <p>Guia Educativo — Hospital Vila Nova • 2025</p>
-  <p style="font-size:1.2rem; font-weight:700; margin-top:10px;">Registrado por: Yuri Santos Coutinho</p>
-  <p style="font-size:1.2rem; font-weight:700; margin-top:10px;">EMAIL: coutinhoyuri17@gmail.com</p>
-</footer>
+        <div style="margin-top:10px;">
+            <strong>Criar usuário</strong>
+            <div class="create-row">
+                <input id="newUserName" placeholder="usuário" />
+                <select id="newUserRole">
+                    <option value="viewer">viewer</option>
+                    <option value="admin">admin</option>
+                </select>
+            </div>
+            <div class="create-row" style="margin-top:8px;">
+                <input id="newUserSenha" placeholder="senha" />
+                <button class="btn" onclick="criarUsuario()">Criar</button>
+            </div>
 
-<script>
-// Sistema de usuários
-let sistema = {
-  usuarios: [
-    {user:'admin',senha:'admin123',role:'admin'},
-    {user:'viewer',senha:'viewer123',role:'viewer'}
-  ],
-  usuarioAtual:null,
-  tema:'claro'
-};
+            <div style="margin-top:10px; display:flex; gap:8px; justify-content:space-between;">
+                <button class="btn muted" onclick="exportarUsuarios()">Exportar (JSON)</button>
+                <button class="btn danger" onclick="resetarUsuarios()">Resetar para padrões</button>
+                <button class="btn" onclick="fecharAdmin()">Fechar</button>
+            </div>
+        </div>
+    </div>
 
-// Login
-const loginBox=document.getElementById('login-box');
-const loginOverlay=document.getElementById('login-overlay');
-document.getElementById('toggle-eye').addEventListener('click',()=>{
-  let p=document.getElementById('login-pass');
-  if(p.type==='password'){p.type='text'; document.getElementById('toggle-eye').className='fa-solid fa-eye-slash';}
-  else{p.type='password'; document.getElementById('toggle-eye').className='fa-solid fa-eye';}
-});
-function entrar(){
-  let u=document.getElementById('login-user').value.trim();
-  let s=document.getElementById('login-pass').value.trim();
-  let usuario=sistema.usuarios.find(x=>x.user===u && x.senha===s);
-  if(usuario){
-    sistema.usuarioAtual=usuario;
-    loginOverlay.style.display='none';
-    aplicarTema();
-    abrirPainel();
-  } else {
-    loginBox.classList.add('shake');
-    setTimeout(()=>{loginBox.classList.remove('shake');},300);
-  }
-}
+    <!-- user bar (aparece quando logado) -->
+    <div id="userBar" class="user-bar" style="display:none;">
+        <span class="name" id="userNome">Usuário</span>
+        <button onclick="abrirPerfil()">Meu Perfil</button>
+        <button onclick="logout()" title="Sair">Sair</button>
+    </div>
 
-// Painéis
-function abrirPainel(){
-  if(sistema.usuarioAtual.role==='admin'){document.getElementById('admin-panel').style.display='block'; atualizarRemoverSelect();}
-  else if(sistema.usuarioAtual.role==='viewer'){document.getElementById('viewer-panel').style.display='block';}
-}
-function fecharPainel(){document.getElementById('admin-panel').style.display='none'; document.getElementById('viewer-panel').style.display='none';}
+    <!-- SITE -->
+    <header>
+        <div class="logo-container" title="Abrir painel admin">
+            <img src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" alt="Logo SAME" id="logoSite">
+            <span class="logo-label">Guia - Conferência de Prontuários</span>
+        </div>
 
-// Admin CRUD
-function criarUsuario(){
-  let u=document.getElementById('novo-user').value.trim();
-  let s=document.getElementById('novo-pass').value.trim();
-  let r=document.getElementById('novo-role').value;
-  if(u && s){sistema.usuarios.push({user:u,senha:s,role:r}); atualizarRemoverSelect(); alert('Usuário criado!');}else alert('Preencha usuário e senha!');
-}
-function atualizarRemoverSelect(){
-  let sel=document.getElementById('remover-user'); sel.innerHTML='';
-  sistema.usuarios.forEach(u=>{
-    if(u.user!==sistema.usuarioAtual.user){let opt=document.createElement('option'); opt.value=u.user; opt.textContent=u.user+' ('+u.role+')'; sel.appendChild(opt);}
-  });
-}
-function removerUsuario(){
-  let sel=document.getElementById('remover-user').value;
-  sistema.usuarios=sistema.usuarios.filter(x=>x.user!==sel);
-  atualizarRemoverSelect();
-  alert('Usuário removido!');
-}
-function resetarSenha(){
-  let novo=prompt('Digite a nova senha:');
-  if(novo)sistema.usuarios.find(x=>x.user==='admin').senha=novo;
-  alert('Senha resetada!');
-}
+        <h1>Guia Completo para Conferência de Prontuários</h1>
+        <p>Organização, segurança e qualidade nas informações administrativas.</p>
+    </header>
 
-// Viewer
-function alterarSenhaViewer(){
-  let n=document.getElementById('nova-senha-viewer').value.trim();
-  if(n){sistema.usuarioAtual.senha=n; alert('Senha alterada!'); document.getElementById('nova-senha-viewer').value='';}
-}
+    <nav>
+        <ul>
+            <li><a href="#download">PDF</a></li>
+            <li><a href="#importancia">Importância</a></li>
+            <li><a href="#materiais">Materiais</a></li>
+            <li><a href="#o-que-e">Prontuário</a></li>
+            <li><a href="#preparo">Preparo</a></li>
+            <li><a href="#passos">Passos</a></li>
+            <li><a href="#erros">Erros</a></li>
+            <li><a href="#boas-praticas">Boas práticas</a></li>
+            <li><a href="#fluxo">Fluxo</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+    </nav>
 
-// Tema
-function temaClaro(){sistema.tema='claro'; aplicarTema();}
-function temaEscuro(){sistema.tema='escuro'; aplicarTema();}
-function aplicarTema(){
-  if(sistema.tema==='escuro'){document.body.classList.add('dark-mode');}
-  else{document.body.classList.remove('dark-mode');}
-}
+    <main class="container" id="siteContent">
+        <!-- (conteúdo original do site — secções) -->
+        <section id="download">
+            <h2><i class="fa-solid fa-file-pdf"></i> Baixar PDF</h2>
+            <p>Clique no botão abaixo para baixar o checklist em PDF.</p>
+            <a class="pdf-btn" href="https://seu-link-do-pdf-aqui.com/checklist.pdf" download>
+                <i class="fa-solid fa-download"></i> Baixar PDF
+            </a>
+        </section>
 
-</script>
+        <section id="importancia">
+            <h2><i class="fa-solid fa-star"></i> Importância da conferência</h2>
+            <ul>
+                <li>Padronização e legibilidade das informações.</li>
+                <li>Correção de dados administrativos.</li>
+                <li>Organização para auditorias internas e externas.</li>
+                <li>Respeito às normas legais e institucionais.</li>
+                <li>Segurança e integridade das informações.</li>
+            </ul>
+        </section>
 
+        <section id="materiais">
+            <h2><i class="fa-solid fa-folder-open"></i> Materiais necessários</h2>
+            <ul>
+                <li>Checklist de conferência oficial.</li>
+                <li>Acesso autorizado ao prontuário.</li>
+                <li>Ferramenta de anotação.</li>
+                <li>Ambiente silencioso e seguro.</li>
+                <li>Caneta.</li>
+                <li>Tira grampos.</li>
+                <li>Carimbos.</li>
+            </ul>
+        </section>
+
+        <section id="o-que-e">
+            <h2><i class="fa-solid fa-notes-medical"></i> O que é um prontuário?</h2>
+            <p>O prontuário reúne informações registradas durante o atendimento e deve manter organização, legibilidade e conformidade institucional.</p>
+        </section>
+
+        <section id="preparo">
+            <h2><i class="fa-solid fa-clipboard-check"></i> Antes de começar</h2>
+            <div class="cards">
+                <div class="card">
+                    <i class="fa-solid fa-id-card"></i>
+                    <h3>Autorização</h3>
+                    <p>Confirme se possui permissão formal.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>Sigilo</h3>
+                    <p>Proteja dados sensíveis conforme a LGPD.</p>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-list-check"></i>
+                    <h3>Checklist</h3>
+                    <p>Use o checklist oficial da instituição.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="passos">
+            <h2><i class="fa-solid fa-list-ul"></i> Passo a passo</h2>
+            <ul>
+                <li>Verifique a identificação do paciente.</li>
+                <li>Organize páginas e documentos.</li>
+                <li>Confirme datas e assinaturas.</li>
+                <li>Cheque campos obrigatórios.</li>
+                <li>Valide anexos.</li>
+            </ul>
+        </section>
+
+        <section id="erros">
+            <h2><i class="fa-solid fa-exclamation-triangle"></i> Erros comuns</h2>
+            <ul>
+                <li>Assinaturas faltando.</li>
+                <li>Páginas desorganizadas.</li>
+                <li>Campos incompletos.</li>
+                <li>Folhas ausentes.</li>
+            </ul>
+        </section>
+
+        <section id="boas-praticas">
+            <h2><i class="fa-solid fa-thumbs-up"></i> Boas práticas</h2>
+            <ul>
+                <li>Trabalhe em ambiente silencioso.</li>
+                <li>Checar itens críticos duas vezes.</li>
+                <li>Registrar inconsistências na hora.</li>
+            </ul>
+        </section>
+
+        <section id="fluxo">
+            <h2><i class="fa-solid fa-diagram-project"></i> Fluxo recomendado</h2>
+            <ol>
+                <li>Receber o prontuário.</li>
+                <li>Verificar autorização.</li>
+                <li>Organizar documentos.</li>
+                <li>Aplicar checklist.</li>
+                <li>Registrar irregularidades.</li>
+                <li>Encaminhar correções.</li>
+                <li>Arquivar corretamente.</li>
+            </ol>
+        </section>
+
+        <section id="faq">
+            <h2><i class="fa-solid fa-circle-question"></i> FAQ</h2>
+
+            <h3>Posso corrigir um prontuário?</h3>
+            <p>Somente o profissional responsável pode corrigir.</p>
+
+            <h3>Posso fotografar o prontuário?</h3>
+            <p>Em geral, não. Informações são sigilosas.</p>
+
+            <h3>Preciso de autorização?</h3>
+            <p>Sempre. O acesso deve ser justificado e formal.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Guia Educativo — Hospital Vila Nova • 2025</p>
+        <p style="font-size:1.05rem; font-weight:700; margin-top:8px;">Registrado por: Yuri Santos Coutinho</p>
+        <p style="font-size:1.05rem; font-weight:700; margin-top:6px;">EMAIL: coutinhoyuri17@gmail.com</p>
+    </footer>
+
+    <!-- Perfil modal (para trocar senha e tema) -->
+    <div id="perfilModal" style="display:none; position:fixed; inset:0; z-index:9997; align-items:center; justify-content:center; background: rgba(0,0,0,0.5);">
+        <div style="background:var(--card-bg); color:var(--text); padding:18px; border-radius:10px; width:360px; box-shadow:0 10px 30px rgba(0,0,0,0.25);">
+            <h3 style="color:var(--verde-escuro); margin-bottom:8px;">Meu Perfil</h3>
+
+            <div style="margin-top:6px;">
+                <strong>Usuário:</strong> <span id="perfilNome"></span>
+            </div>
+
+            <div style="margin-top:10px;">
+                <label style="display:block; margin-bottom:6px; font-weight:600;">Trocar senha</label>
+                <input id="perfilSenhaNova" type="password" placeholder="Nova senha" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+                <div style="display:flex; gap:8px; margin-top:8px;">
+                    <button onclick="trocarSenha()" style="flex:1; padding:8px; border-radius:6px; border:none; background:var(--verde-medio); color:white; font-weight:700;">Alterar</button>
+                    <button onclick="document.getElementById('perfilModal').style.display='none'" style="flex:1; padding:8px; border-radius:6px; border:none; background:#ddd;">Fechar</button>
+                </div>
+            </div>
+
+            <div style="margin-top:12px;">
+                <label style="display:block; margin-bottom:6px; font-weight:600;">Tema</label>
+                <select id="perfilTema" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc;">
+                    <option value="light">Claro</option>
+                    <option value="dark">Escuro</option>
+                </select>
+            </div>
+
+            <div style="margin-top:12px; display:flex; gap:8px;">
+                <button onclick="salvarTemaUsuario()" style="flex:1; padding:8px; border-radius:6px; border:none; background:#0b6e4f; color:white; font-weight:700;">Salvar Tema</button>
+                <button onclick="document.getElementById('perfilModal').style.display='none'" style="flex:1; padding:8px; border-radius:6px; border:none; background:#ddd;">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    /*******************
+     * Gerenciamento de usuários (front-end apenas)
+     * salva em localStorage
+     *******************/
+    const STORAGE_KEY = "sistema_usuarios_v1";
+    const STORAGE_USER = "sistema_logado_v1";
+
+    // Carrega usuários do localStorage ou cria padrões
+    function carregarUsuarios(){
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw){
+            const padrao = [
+                { user: "admin", senha: "1234", role: "admin", tema: "light" },
+                { user: "yuri", senha: "1234", role: "viewer", tema: "light" },
+            ];
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(padrao));
+            return padrao;
+        }
+        try { return JSON.parse(raw) } catch(e){ return []; }
+    }
+
+    let usuarios = carregarUsuarios();
+    let usuarioLogado = null;
+
+    // Aplica tema (global) — e também lê tema do usuário quando logado
+    function aplicarTema(tema){
+        if(tema === "dark") document.body.classList.add("dark");
+        else document.body.classList.remove("dark");
+    }
+
+    // Quando a página carrega, checar sessão
+    document.addEventListener("DOMContentLoaded", () => {
+        // toggler olho - login
+        document.getElementById("toggleSenha").addEventListener("click", () => {
+            const el = document.getElementById("userSenha");
+            if(el.type === "password"){ el.type = "text"; document.getElementById("toggleSenha").classList.remove("fa-eye"); document.getElementById("toggleSenha").classList.add("fa-eye-slash"); }
+            else { el.type = "password"; document.getElementById("toggleSenha").classList.add("fa-eye"); document.getElementById("toggleSenha").classList.remove("fa-eye-slash"); }
+        });
+
+        // if existe sessão
+        const sessao = localStorage.getItem(STORAGE_USER);
+        if(sessao){
+            try{
+                const obj = JSON.parse(sessao);
+                const encontrado = usuarios.find(u => u.user === obj.user);
+                if(encontrado && encontrado.senha === obj.senha){
+                    usuarioLogado = encontrado;
+                    onLogin();
+                    return;
+                }
+            }catch(e){}
+        }
+
+        // Sem sessão: mostrar overlay e aplicar tema default (light)
+        aplicarTema("light");
+        document.getElementById("loginOverlay").style.display = "flex";
+    });
+
+    // Função de login
+    function login(){
+        const u = document.getElementById("userLogin").value.trim();
+        const s = document.getElementById("userSenha").value;
+
+        const encontrado = usuarios.find(x => x.user === u && x.senha === s);
+        if(!encontrado){
+            // animar shake
+            const box = document.getElementById("loginBox");
+            box.style.animation = "shake .4s";
+            setTimeout(()=> box.style.animation = "", 420);
+            return;
+        }
+
+        usuarioLogado = encontrado;
+        // salvar sessão (simples)
+        localStorage.setItem(STORAGE_USER, JSON.stringify({ user: encontrado.user, senha: encontrado.senha }));
+        onLogin();
+    }
+
+    // Ao logar: esconder overlay, mostrar userbar e aplicar tema do usuário
+    function onLogin(){
+        document.getElementById("loginOverlay").style.display = "none";
+        document.getElementById("userBar").style.display = "flex";
+        document.getElementById("userNome").textContent = usuarioLogado.user;
+
+        // aplicar tema salvo no usuário
+        aplicarTema(usuarioLogado.tema || "light");
+
+        // atualizar lista do admin (caso abra)
+        atualizarListaUsuarios();
+    }
+
+    // Logout
+    function logout(){
+        usuarioLogado = null;
+        localStorage.removeItem(STORAGE_USER);
+        document.getElementById("userBar").style.display = "none";
+        document.getElementById("loginOverlay").style.display = "flex";
+        // limpar campos
+        document.getElementById("userLogin").value = "";
+        document.getElementById("userSenha").value = "";
+        // resetar tema default
+        aplicarTema("light");
+    }
+
+    // abrir painel admin (clicando na logo) — apenas admin
+    document.querySelector(".logo-container").addEventListener("click", () => {
+        if(!usuarioLogado){ alert("Você precisa estar logado como administrador."); return; }
+        if(usuarioLogado.role !== "admin"){ alert("Apenas administradores podem acessar o painel."); return; }
+        abrirAdmin();
+    });
+
+    function abrirAdmin(){
+        document.getElementById("adminPanel").style.display = "block";
+        document.getElementById("adminPanel").setAttribute("aria-hidden","false");
+        atualizarListaUsuarios();
+    }
+    function fecharAdmin(){
+        document.getElementById("adminPanel").style.display = "none";
+        document.getElementById("adminPanel").setAttribute("aria-hidden","true");
+    }
+
+    // Atualizar lista no admin
+    function atualizarListaUsuarios(){
+        usuarios = carregarUsuarios();
+        const lista = document.getElementById("listaUsuarios");
+        lista.innerHTML = "";
+
+        usuarios.forEach(u => {
+            const li = document.createElement("li");
+            const left = document.createElement("div");
+            left.style.display = "flex";
+            left.style.flexDirection = "column";
+            left.innerHTML = `<span style="font-weight:700">${u.user}</span><small style="color:#666">${u.role}</small>`;
+
+            const right = document.createElement("div");
+            right.style.display = "flex";
+            right.style.gap = "6px";
+            // botões (admin pode reset/senha e deletar)
+            const btnReset = document.createElement("button");
+            btnReset.className = "btn muted";
+            btnReset.textContent = "Reset Senha";
+            btnReset.onclick = () => {
+                const nova = prompt("Nova senha para " + u.user + ":", "1234");
+                if(nova !== null && nova.trim() !== ""){
+                    u.senha = nova;
+                    salvarUsuarios();
+                    atualizarListaUsuarios();
+                    alert("Senha alterada.");
+                }
+            };
+            const btnExcluir = document.createElement("button");
+            btnExcluir.className = "btn danger";
+            btnExcluir.textContent = "Excluir";
+            btnExcluir.onclick = () => {
+                if(u.user === usuarioLogado.user){ alert("Você não pode excluir o próprio usuário."); return; }
+                if(confirm("Excluir usuário " + u.user + " ?")){
+                    usuarios = usuarios.filter(x => x.user !== u.user);
+                    salvarUsuarios();
+                    atualizarListaUsuarios();
+                }
+            };
+
+            // se for admin logado, mostrar controles; senão apenas mostrar role
+            if(usuarioLogado && usuarioLogado.role === "admin"){
+                right.appendChild(btnReset);
+                right.appendChild(btnExcluir);
+            }
+
+            li.appendChild(left);
+            li.appendChild(right);
+            lista.appendChild(li);
+        });
+    }
+
+    // Criar usuário (admin)
+    function criarUsuario(){
+        if(!usuarioLogado || usuarioLogado.role !== "admin"){ alert("Apenas admin pode criar usuários."); return; }
+        const nome = document.getElementById("newUserName").value.trim();
+        const senha = document.getElementById("newUserSenha").value || "1234";
+        const role = document.getElementById("newUserRole").value;
+
+        if(!nome){ alert("Informe um nome de usuário."); return; }
+        if(usuarios.find(u => u.user === nome)){ alert("Usuário já existe."); return; }
+
+        usuarios.push({ user: nome, senha: senha, role: role, tema: "light" });
+        salvarUsuarios();
+        document.getElementById("newUserName").value = "";
+        document.getElementById("newUserSenha").value = "";
+        atualizarListaUsuarios();
+    }
+
+    // salvar usuarios no storage
+    function salvarUsuarios(){
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(usuarios));
+    }
+
+    // Exportar usuarios (JSON)
+    function exportarUsuarios(){
+        const data = JSON.stringify(usuarios, null, 2);
+        // abrir em nova aba como blob
+        const blob = new Blob([data], {type: "application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "usuarios.json";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    }
+
+    // Resetar para usuários padrões
+    function resetarUsuarios(){
+        if(!confirm("Resetar usuários para o padrão? Isto restaurará admin/yuri.")) return;
+        localStorage.removeItem(STORAGE_KEY);
+        usuarios = carregarUsuarios();
+        salvarUsuarios();
+        atualizarListaUsuarios();
+        alert("Reset concluído.");
+    }
+
+    // abrir perfil: viewer pode trocar só a própria senha e escolher tema
+    function abrirPerfil(){
+        if(!usuarioLogado) return alert("Logue primeiro.");
+        document.getElementById("perfilNome").textContent = usuarioLogado.user;
+        document.getElementById("perfilTema").value = usuarioLogado.tema || "light";
+        document.getElementById("perfilModal").style.display = "flex";
+
+        // controlar visibilidade de ações: viewers só podem alterar sua própria senha (que já é o caso)
+        // admins também podem alterar a própria senha e tema
+    }
+
+    // trocar senha do usuário logado
+    function trocarSenha(){
+        if(!usuarioLogado) return alert("Logue primeiro.");
+        const nova = document.getElementById("perfilSenhaNova").value.trim();
+        if(!nova){ alert("Informe a nova senha."); return; }
+
+        // atualizar no array e storage
+        usuarios = usuarios.map(u => {
+            if(u.user === usuarioLogado.user){
+                u.senha = nova;
+            }
+            return u;
+        });
+        salvarUsuarios();
+
+        // atualizar sessão em storage
+        usuarioLogado.senha = nova;
+        localStorage.setItem(STORAGE_USER, JSON.stringify({ user: usuarioLogado.user, senha: usuarioLogado.senha }));
+
+        document.getElementById("perfilSenhaNova").value = "";
+        alert("Senha alterada com sucesso.");
+    }
+
+    // salvar tema escolhido no perfil (aplica a todo site)
+    function salvarTemaUsuario(){
+        if(!usuarioLogado) return alert("Logue primeiro.");
+        const tema = document.getElementById("perfilTema").value;
+        // salvar no usuário
+        usuarios = usuarios.map(u => {
+            if(u.user === usuarioLogado.user){
+                u.tema = tema;
+            }
+            return u;
+        });
+        salvarUsuarios();
+        usuarioLogado.tema = tema;
+        aplicarTema(tema);
+        alert("Tema salvo para " + usuarioLogado.user);
+    }
+
+    /***** Acessibilidade: detectar Enter no login *****/
+    document.getElementById("userSenha").addEventListener("keydown", (e) => {
+        if(e.key === "Enter") login();
+    });
+    document.getElementById("userLogin").addEventListener("keydown", (e) => {
+        if(e.key === "Enter") login();
+    });
+
+    </script>
 </body>
 </html>
