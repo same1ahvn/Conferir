@@ -143,173 +143,355 @@
         .pdf-btn:hover {
             background: #086a44;
         }
-    </style>
 
-    <script>
-        const senha = "1234";
-        const entrada = prompt("Digite a senha para acessar o site:");
+        /* ==========================
+           TELA DE LOGIN
+        ========================== */
 
-        if (entrada !== senha) {
-            alert("Senha incorreta!");
-            window.location.href = "https://www.google.com";
+        #login-container {
+            position: fixed;
+            z-index: 999999;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(6px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeInBg 0.6s ease forwards;
         }
-    </script>
+
+        @keyframes fadeInBg {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #login-box {
+            width: 350px;
+            background: #ffffffdd;
+            padding: 40px 30px;
+            border-radius: 18px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            animation: boxIn 0.7s ease forwards 0.2s;
+        }
+
+        @keyframes boxIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        #login-box img {
+            width: 95px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .input-area { position: relative; }
+
+        #senha-input {
+            width: 100%;
+            padding: 12px 45px 12px 12px;
+            border: 2px solid #0b6e4f;
+            border-radius: 10px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        #toggle-eye {
+            position: absolute;
+            right: 10px;
+            top: 12px;
+            cursor: pointer;
+            color: #0b6e4f;
+            font-size: 1.2rem;
+        }
+
+        #btn-login {
+            margin-top: 18px;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #0b6e4f, #10a56f);
+            border: none;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        #mensagem {
+            margin-top: 10px;
+            font-weight: 600;
+            min-height: 22px;
+        }
+
+        .fadeOutScreen {
+            animation: fadeOut 0.7s ease forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+            }
+        }
+
+        /* TREMER */
+        .shake {
+            animation: shakeAnim 0.4s ease;
+        }
+
+        @keyframes shakeAnim {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-8px); }
+            40% { transform: translateX(8px); }
+            60% { transform: translateX(-8px); }
+            80% { transform: translateX(8px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
 
 </head>
 
 <body>
 
-    <header>
-        <div class="logo-container">
-            <img src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" alt="Logo SAME">
+<!-- TELA DE LOGIN -->
+<div id="login-container">
+    <div id="login-box">
+        <img src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" alt="Logo SAME">
+        <h2>🔐 Acesso Restrito</h2>
+
+        <div class="input-area">
+            <input type="password" id="senha-input" placeholder="Digite a senha">
+            <i class="fa-solid fa-eye" id="toggle-eye"></i>
         </div>
 
-        <h1>Guia Completo para Conferência de Prontuários</h1>
-        <p>Organização, segurança e qualidade nas informações administrativas.</p>
-    </header>
+        <button id="btn-login">Entrar</button>
+        <p id="mensagem"></p>
+    </div>
+</div>
 
-    <nav>
-        <ul>
-            <li><a href="#download">PDF</a></li>
-            <li><a href="#importancia">Importância</a></li>
-            <li><a href="#materiais">Materiais</a></li>
-            <li><a href="#o-que-e">Prontuário</a></li>
-            <li><a href="#preparo">Preparo</a></li>
-            <li><a href="#passos">Passos</a></li>
-            <li><a href="#erros">Erros</a></li>
-            <li><a href="#boas-praticas">Boas práticas</a></li>
-            <li><a href="#fluxo">Fluxo</a></li>
-            <li><a href="#faq">FAQ</a></li>
-        </ul>
-    </nav>
+<script>
+    const senhaCorreta = "A1B2C3";
+    let tentativas = 3;
 
-    <div class="container">
+    const input = document.getElementById("senha-input");
+    const msg = document.getElementById("mensagem");
+    const container = document.getElementById("login-container");
+    const btn = document.getElementById("btn-login");
+    const loginBox = document.getElementById("login-box");
+    const toggleEye = document.getElementById("toggle-eye");
 
-        <section id="download">
-            <h2><i class="fa-solid fa-file-pdf"></i> Baixar PDF</h2>
-            <p>Clique no botão abaixo para baixar o checklist em PDF.</p>
-            <a class="pdf-btn" href="https://seu-link-do-pdf-aqui.com/checklist.pdf" download>
-                <i class="fa-solid fa-download"></i> Baixar PDF
-            </a>
-        </section>
+    // Senha salva
+    if (localStorage.getItem("acessoLiberado") === "true") {
+        container.style.display = "none";
+    }
 
-        <section id="importancia">
-            <h2><i class="fa-solid fa-star"></i> Importância da conferência</h2>
-            <ul>
-                <li>Padronização e legibilidade das informações.</li>
-                <li>Correção de dados administrativos.</li>
-                <li>Organização para auditorias internas e externas.</li>
-                <li>Respeito às normas legais e institucionais.</li>
-                <li>Segurança e integridade das informações.</li>
-            </ul>
-        </section>
+    // Mostrar/ocultar senha
+    toggleEye.addEventListener("click", () => {
+        if (input.type === "password") {
+            input.type = "text";
+            toggleEye.classList.replace("fa-eye", "fa-eye-slash");
+        } else {
+            input.type = "password";
+            toggleEye.classList.replace("fa-eye-slash", "fa-eye");
+        }
+    });
 
-        <section id="materiais">
-            <h2><i class="fa-solid fa-folder-open"></i> Materiais necessários</h2>
-            <ul>
-                <li>Checklist de conferência oficial.</li>
-                <li>Acesso autorizado ao prontuário.</li>
-                <li>Ferramenta de anotação.</li>
-                <li>Ambiente silencioso e seguro.</li>
-                <li>Caneta.</li>
-                <li>Tira grampos.</li>
-                <li>Carimbos.</li>
-            </ul>
-        </section>
+    btn.addEventListener("click", verificarSenha);
+    input.addEventListener("keypress", e => { if (e.key === "Enter") verificarSenha(); });
 
-        <section id="o-que-e">
-            <h2><i class="fa-solid fa-notes-medical"></i> O que é um prontuário?</h2>
-            <p>O prontuário reúne informações registradas durante o atendimento e deve manter organização, legibilidade e conformidade institucional.</p>
-        </section>
+    function verificarSenha() {
+        if (input.value === senhaCorreta) {
+            msg.style.color = "green";
+            msg.textContent = "✔ Acesso liberado!";
+            localStorage.setItem("acessoLiberado", "true");
 
-        <section id="preparo">
-            <h2><i class="fa-solid fa-clipboard-check"></i> Antes de começar</h2>
-            <div class="cards">
-                <div class="card">
-                    <i class="fa-solid fa-id-card"></i>
-                    <h3>Autorização</h3>
-                    <p>Confirme se possui permissão formal.</p>
-                </div>
+            setTimeout(() => container.classList.add("fadeOutScreen"), 300);
+            setTimeout(() => container.style.display = "none", 1200);
+            return;
+        }
 
-                <div class="card">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <h3>Sigilo</h3>
-                    <p>Proteja dados sensíveis conforme a LGPD.</p>
-                </div>
+        tentativas--;
+        loginBox.classList.add("shake");
+        setTimeout(() => loginBox.classList.remove("shake"), 500);
 
-                <div class="card">
-                    <i class="fa-solid fa-list-check"></i>
-                    <h3>Checklist</h3>
-                    <p>Use o checklist oficial da instituição.</p>
-                </div>
-            </div>
-        </section>
+        msg.style.color = "red";
+        msg.textContent = `Senha incorreta! Restam ${tentativas} tentativa(s).`;
+        input.value = "";
 
-        <section id="passos">
-            <h2><i class="fa-solid fa-list-ul"></i> Passo a passo</h2>
-            <ul>
-                <li>Verifique a identificação do paciente.</li>
-                <li>Organize páginas e documentos.</li>
-                <li>Confirme datas e assinaturas.</li>
-                <li>Cheque campos obrigatórios.</li>
-                <li>Valide anexos.</li>
-            </ul>
-        </section>
+        if (tentativas <= 0) {
+            msg.textContent = "Muitas tentativas! Saindo...";
+            setTimeout(() => window.location.href = "https://www.google.com", 1500);
+        }
+    }
+</script>
 
-        <section id="erros">
-            <h2><i class="fa-solid fa-exclamation-triangle"></i> Erros comuns</h2>
-            <ul>
-                <li>Assinaturas faltando.</li>
-                <li>Páginas desorganizadas.</li>
-                <li>Campos incompletos.</li>
-                <li>Folhas ausentes.</li>
-            </ul>
-        </section>
 
-        <section id="boas-praticas">
-            <h2><i class="fa-solid fa-thumbs-up"></i> Boas práticas</h2>
-            <ul>
-                <li>Trabalhe em ambiente silencioso.</li>
-                <li>Checar itens críticos duas vezes.</li>
-                <li>Registrar inconsistências na hora.</li>
-            </ul>
-        </section>
 
-        <section id="fluxo">
-            <h2><i class="fa-solid fa-diagram-project"></i> Fluxo recomendado</h2>
-            <ol>
-                <li>Receber o prontuário.</li>
-                <li>Verificar autorização.</li>
-                <li>Organizar documentos.</li>
-                <li>Aplicar checklist.</li>
-                <li>Registrar irregularidades.</li>
-                <li>Encaminhar correções.</li>
-                <li>Arquivar corretamente.</li>
-            </ol>
-        </section>
 
-        <section id="faq">
-            <h2><i class="fa-solid fa-circle-question"></i> FAQ</h2>
 
-            <h3>Posso corrigir um prontuário?</h3>
-            <p>Somente o profissional responsável pode corrigir.</p>
-
-            <h3>Posso fotografar o prontuário?</h3>
-            <p>Em geral, não. Informações são sigilosas.</p>
-
-            <h3>Preciso de autorização?</h3>
-            <p>Sempre. O acesso deve ser justificado e formal.</p>
-        </section>
-
+<header>
+    <div class="logo-container">
+        <img src="https://leannasemergencias.com.br/wp-content/uploads/group-avatars/62/5c74020bb481d-bpfull.jpg" alt="Logo SAME">
     </div>
 
-    <footer>
-        <p>Guia Educativo — Hospital Vila Nova • 2025</p>
-        <p style="font-size: 1.2rem; font-weight: 700; margin-top: 10px;">Registrado por: Yuri Santos Coutinho</p>
-        <p style="font-size: 1.2rem; font-weight: 700; margin-top: 10px;">EMAIL: coutinhoyuri17@gmail.com</p>
-    </footer>
+    <h1>Guia Completo para Conferência de Prontuários</h1>
+    <p>Organização, segurança e qualidade nas informações administrativas.</p>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="#download">PDF</a></li>
+        <li><a href="#importancia">Importância</a></li>
+        <li><a href="#materiais">Materiais</a></li>
+        <li><a href="#o-que-e">Prontuário</a></li>
+        <li><a href="#preparo">Preparo</a></li>
+        <li><a href="#passos">Passos</a></li>
+        <li><a href="#erros">Erros</a></li>
+        <li><a href="#boas-praticas">Boas práticas</a></li>
+        <li><a href="#fluxo">Fluxo</a></li>
+        <li><a href="#faq">FAQ</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+
+    <section id="download">
+        <h2><i class="fa-solid fa-file-pdf"></i> Baixar PDF</h2>
+        <p>Clique no botão abaixo para baixar o checklist em PDF.</p>
+        <a class="pdf-btn" href="#" download>
+            <i class="fa-solid fa-download"></i> Baixar PDF
+        </a>
+    </section>
+
+    <section id="importancia">
+        <h2><i class="fa-solid fa-star"></i> Importância da conferência</h2>
+        <ul>
+            <li>Padronização e legibilidade das informações.</li>
+            <li>Correção de dados administrativos.</li>
+            <li>Organização para auditorias internas e externas.</li>
+            <li>Respeito às normas legais e institucionais.</li>
+            <li>Segurança e integridade das informações.</li>
+        </ul>
+    </section>
+
+    <section id="materiais">
+        <h2><i class="fa-solid fa-folder-open"></i> Materiais necessários</h2>
+        <ul>
+            <li>Checklist de conferência oficial.</li>
+            <li>Acesso autorizado ao prontuário.</li>
+            <li>Ferramenta de anotação.</li>
+            <li>Ambiente silencioso e seguro.</li>
+            <li>Caneta.</li>
+            <li>Tira grampos.</li>
+            <li>Carimbos.</li>
+        </ul>
+    </section>
+
+    <section id="o-que-e">
+        <h2><i class="fa-solid fa-notes-medical"></i> O que é um prontuário?</h2>
+        <p>O prontuário reúne informações registradas durante o atendimento.</p>
+    </section>
+
+    <section id="preparo">
+        <h2><i class="fa-solid fa-clipboard-check"></i> Antes de começar</h2>
+        <div class="cards">
+            <div class="card">
+                <i class="fa-solid fa-id-card"></i>
+                <h3>Autorização</h3>
+                <p>Confirme se possui permissão formal.</p>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Sigilo</h3>
+                <p>Proteja dados conforme a LGPD.</p>
+            </div>
+
+            <div class="card">
+                <i class="fa-solid fa-list-check"></i>
+                <h3>Checklist</h3>
+                <p>Use o checklist oficial.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="passos">
+        <h2><i class="fa-solid fa-list-ul"></i> Passo a passo</h2>
+        <ul>
+            <li>Verifique a identificação.</li>
+            <li>Organize páginas e documentos.</li>
+            <li>Confirme datas e assinaturas.</li>
+            <li>Cheque campos obrigatórios.</li>
+            <li>Valide anexos.</li>
+        </ul>
+    </section>
+
+    <section id="erros">
+        <h2><i class="fa-solid fa-exclamation-triangle"></i> Erros comuns</h2>
+        <ul>
+            <li>Assinaturas faltando.</li>
+            <li>Páginas desorganizadas.</li>
+            <li>Campos incompletos.</li>
+            <li>Folhas ausentes.</li>
+        </ul>
+    </section>
+
+    <section id="boas-praticas">
+        <h2><i class="fa-solid fa-thumbs-up"></i> Boas práticas</h2>
+        <ul>
+            <li>Trabalhe em ambiente silencioso.</li>
+            <li>Checar itens críticos duas vezes.</li>
+            <li>Registrar inconsistências na hora.</li>
+        </ul>
+    </section>
+
+    <section id="fluxo">
+        <h2><i class="fa-solid fa-diagram-project"></i> Fluxo recomendado</h2>
+        <ol>
+            <li>Receber o prontuário.</li>
+            <li>Verificar autorização.</li>
+            <li>Organizar documentos.</li>
+            <li>Aplicar checklist.</li>
+            <li>Registrar irregularidades.</li>
+            <li>Encaminhar correções.</li>
+            <li>Arquivar corretamente.</li>
+        </ol>
+    </section>
+
+    <section id="faq">
+        <h2><i class="fa-solid fa-circle-question"></i> FAQ</h2>
+
+        <h3>Posso corrigir um prontuário?</h3>
+        <p>Somente o profissional responsável pode corrigir.</p>
+
+        <h3>Posso fotografar o prontuário?</h3>
+        <p>Em geral, não.</p>
+
+        <h3>Preciso de autorização?</h3>
+        <p>Sempre.</p>
+    </section>
+
+</div>
+
+<footer>
+    <p>Guia Educativo — Hospital Vila Nova • 2025</p>
+    <p style="font-size: 1.2rem; font-weight: 700; margin-top: 10px;">Registrado por: Yuri Santos Coutinho</p>
+    <p style="font-size: 1.2rem; font-weight: 700; margin-top: 10px;">EMAIL: coutinhoyuri17@gmail.com</p>
+</footer>
 
 </body>
 </html>
-
-
